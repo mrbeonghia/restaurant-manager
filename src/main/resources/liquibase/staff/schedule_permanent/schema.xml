@@ -1,0 +1,47 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+	<changeSet id="create_table_schedule_permanent" author="NghiaNT">
+		<createTable tableName="schedule_permanent">
+			<column name="id" type="int" autoIncrement="true">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="staff_id" type="int(11)" />
+			<column name="store_id" type="int(11)" />
+			<column name="day_of_week" type="int(2)" />
+			<column name="start_time" type="varchar(20)" />
+			<column name="end_time" type="varchar(20)" />
+
+			<column name="created_time" type="TIMESTAMP" />
+			<column name="updated_time" type="TIMESTAMP" />
+			<column name="created_by_user_id" type="int(11)"/>
+			<column name="updated_by_user_id" type="int(11)"/>
+			<column name="is_deleted" type="boolean" defaultValueBoolean="false"/>
+		</createTable>
+
+
+		<modifySql dbms="mysql">
+			<append
+				value="ENGINE=INNODB CHARSET=utf8mb4 COLLATE utf8mb4_unicode_520_ci" />
+		</modifySql>
+	</changeSet>
+
+	<changeSet id="rename_table_schedule_permanent" author="vy">
+		<renameTable oldTableName="schedule_permanent" newTableName="shift_schedule"/>
+	</changeSet>
+
+	<changeSet author="NghiaNT" id="add_column_session_table_shift_schedule">
+		<addColumn tableName="shift_schedule">
+			<column name="session" type="varchar(20)" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="add_column_first_day_of_month" author="vy">
+		<addColumn tableName="shift_schedule">
+			<column name="first_day_of_month" type="timestamp"/>
+		</addColumn>
+	</changeSet>
+
+</databaseChangeLog>

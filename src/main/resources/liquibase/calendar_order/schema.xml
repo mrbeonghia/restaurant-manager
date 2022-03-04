@@ -1,0 +1,153 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="create_table_calendar_order" author="HopDV">
+        <createTable tableName="calendar_order">
+
+            <column name="id" type="int(11)" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="int(11)"/>
+            <column name="store_id" type="int(11)"/>
+            <column name="staff_id" type="int(11)"/>
+            <column name="package_care_id" type="int(11)"/>
+            <column name="email" type="varchar(60)"/>
+            <column name="phone_number" type="varchar(20)"/>
+            <column name="name_customer" type="varchar(60)"/>
+            <column name="date_order" type="varchar(30)"/>
+            <column name="time_start" type="TIMESTAMP"/>
+            <column name="time_end" type="TIMESTAMP"/>
+            <column name="price" type="int(11)"/>
+
+            <column name="created_time" type="TIMESTAMP"/>
+            <column name="updated_time" type="TIMESTAMP"/>
+            <column name="created_by_user_id" type="int(11)"/>
+            <column name="updated_by_user_id" type="int(11)"/>
+            <column name="is_deleted" type="boolean" defaultValueBoolean="false"/>
+        </createTable>
+
+        <modifySql dbms="mysql">
+            <append value="ENGINE=INNODB CHARSET=utf8mb4 COLLATE utf8mb4_unicode_520_ci"/>
+        </modifySql>
+    </changeSet>
+
+    <changeSet id="add_column_choose_staff" author="HopDV">
+        <addColumn tableName="calendar_order">
+            <column name="choose_staff" type="boolean" defaultValueBoolean="false"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="add_column_status" author="HopDV">
+        <addColumn tableName="calendar_order">
+            <column name="status" type="varchar(60)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="NghiaNT" id="rename_column_package_care_id_table_calendar_order">
+        <renameColumn columnDataType="int(11)"
+                      newColumnName="combo_pack_id"
+                      oldColumnName="package_care_id"
+                      tableName="calendar_order"/>
+    </changeSet>
+
+    <changeSet id="add_column_coupon_id_point_use_uuid_table_calendar_order" author="NghiaNT">
+        <addColumn tableName="calendar_order">
+            <column name="coupon_id" type="int(11)"/>
+            <column name="point_use" type="int(11)"/>
+            <column name="uuid" type="text"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="add_column_review_id_table_calendar_order" author="NghiaNT">
+        <addColumn tableName="calendar_order">
+            <column name="review_id" type="int(11)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="add_column_schedule_id_comment_of_staff_note_table_calendar_order" author="NghiaNT">
+        <addColumn tableName="calendar_order">
+            <column name="schedule_id" type="int(11)"/>
+            <column name="note" type="text"/>
+            <column name="comment_of_staff" type="text"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="add_column_booking_minute_accompany_qr_image_table_calendar_order" author="NghiaNT">
+        <addColumn tableName="calendar_order">
+            <column name="booking_minute" type="int(6)"/>
+            <column name="accompany" type="boolean" defaultValueBoolean="false"/>
+            <column name="qr_image" type="text"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="add_some_columns_for_rest_time_info" author="">
+        <addColumn tableName="calendar_order">
+            <column name="rest_time_minutes" type="int(3)"/>
+            <column name="time_finnish_working" type="TIMESTAMP"/>
+            <column name="time_finnish_working_and_cleaning" type="TIMESTAMP"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="rename_table_calendar_order" author="vy">
+        <renameTable oldTableName="calendar_order" newTableName="booking"/>
+    </changeSet>
+
+    <changeSet id="rename_column_accompany" author="vy">
+        <renameColumn tableName="booking" oldColumnName="accompany" newColumnName="owner" columnDataType="boolean"/>
+    </changeSet>
+
+    <changeSet id="add_column_shift_id" author="vy">
+        <addColumn tableName="booking">
+            <column name="shift_id" type="int(11)"/>
+            <column name="surplus_rest_time" type="int(6)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="add_column_sex" author="NghiaNT">
+        <addColumn tableName="booking">
+            <column name="sex" type="varchar(20)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="add_column_gacha_table_booking" author="NghiaNT">
+        <addColumn tableName="booking">
+            <column name="gacha_id" type="int(11)"/>
+            <column name="spin_gacha_date" type="TIMESTAMP"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="add_column_change_when" author="vy">
+        <addColumn tableName="booking">
+            <column name="change_when" type="varchar(60)"/>
+            <column name="user_checkin_time" type="TIMESTAMP"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="add_column_origin_booking_id" author="vy">
+        <addColumn tableName="booking">
+            <column name="origin_booking_id" type="int(11)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="add_column_time_start_time_end_before_checkin" author="vy">
+        <addColumn tableName="booking">
+            <column name="time_start_before_checkin" type="TIMESTAMP"/>
+            <column name="time_end_before_checkin" type="TIMESTAMP"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="add_column_time_finish_working_before_checkin" author="vy">
+        <addColumn tableName="booking">
+            <column name="time_finish_working_before_checkin" type="TIMESTAMP"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="add_column_user_checkout_time" author="NghiaNT">
+        <addColumn tableName="booking">
+            <column name="user_checkout_time" type="TIMESTAMP"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

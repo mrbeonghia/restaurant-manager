@@ -1,0 +1,66 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+	<changeSet id="create_table_review" author="HopDV">
+		<createTable tableName="review">
+
+			<column name="id" type="int(11)" autoIncrement="true">
+				<constraints primaryKey="true"/>
+			</column>
+			<column name="staff_name" type="varchar(100)"/>
+			<column name="store_id" type="int(11)"/>
+			<column name="rating1" type="int(3)"/>
+			<column name="rating2" type="int(3)"/>
+			<column name="rating3" type="int(3)"/>
+			<column name="rating4" type="int(3)"/>
+			<column name="rating5" type="int(3)"/>
+			<column name="rating6" type="int(3)"/>
+			<column name="comment" type="text"/>
+
+			<column name="created_time" type="TIMESTAMP"/>
+			<column name="updated_time" type="TIMESTAMP"/>
+			<column name="created_by_user_id" type="int(11)"/>
+			<column name="updated_by_user_id" type="int(11)"/>
+			<column name="is_deleted" type="boolean" defaultValueBoolean="false"/>
+		</createTable>
+
+		<modifySql dbms="mysql">
+			<append value="ENGINE=INNODB CHARSET=utf8mb4 COLLATE utf8mb4_unicode_520_ci"/>
+		</modifySql>
+	</changeSet>
+	<changeSet author="HopDV" id="add_column_rating7_table_review">
+		<addColumn tableName="review">
+			<column name="rating7" type="int(3)"/>
+		</addColumn>
+	</changeSet>
+	<changeSet author="HopDV" id="add_column_date_service">
+		<addColumn tableName="review">
+			<column name="date_service" type="varchar(100)"/>
+		</addColumn>
+	</changeSet>
+	<changeSet author="HopDV" id="add_column_name_customer">
+		<addColumn tableName="review">
+			<column name="name_customer" type="varchar(200)"/>
+		</addColumn>
+	</changeSet>
+	<changeSet author="NghiaNT" id="add_column_staff_id_rating_average_table_review">
+		<addColumn tableName="review">
+			<column name="staff_id" type="int(11)"/>
+			<column name="rating_average" type="float(3,2)"/>
+		</addColumn>
+	</changeSet>
+	<changeSet author="NghiaNT" id="add_column_deleted_by_store_table_review">
+		<addColumn tableName="review">
+			<column name="deleted_by_store" type="boolean" defaultValueBoolean="false"/>
+		</addColumn>
+	</changeSet>
+
+	<changeSet author="NghiaNT" id="add_column_point_review_table_review">
+		<addColumn tableName="review">
+			<column name="point_review" type="int(11)" />
+		</addColumn>
+	</changeSet>
+
+</databaseChangeLog>

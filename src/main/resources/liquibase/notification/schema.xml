@@ -1,0 +1,60 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="create_table_notification" author="HopDV">
+        <createTable tableName="notification">
+
+            <column name="id" type="int(11)" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="int(11)"/>
+            <column name="title" type="varchar(255)"/>
+            <column name="type" type="varchar(60)"/>
+            <column name="image_url" type="text"/>
+            <column name="description" type="text"/>
+            <column name="content" type="text"/>
+
+            <column name="created_time" type="TIMESTAMP"/>
+            <column name="updated_time" type="TIMESTAMP"/>
+            <column name="created_by_user_id" type="int(11)"/>
+            <column name="updated_by_user_id" type="int(11)"/>
+            <column name="is_deleted" type="boolean" defaultValueBoolean="false"/>
+            <column name="is_all" type="boolean"/>
+        </createTable>
+
+        <modifySql dbms="mysql">
+            <append value="ENGINE=INNODB CHARSET=utf8mb4 COLLATE utf8mb4_unicode_520_ci"/>
+        </modifySql>
+    </changeSet>
+
+    <changeSet author="HopDV" id="modifyDataType-title">
+        <modifyDataType
+                columnName="title"
+                newDataType="text"
+                tableName="notification"/>
+    </changeSet>
+
+    <changeSet author="HopDV" id="add_column_store_id_table_notification">
+        <addColumn tableName="notification">
+            <column name="store_id" type="int(11)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="NghiaNT" id="add_column_start_end_date_table_notification">
+        <addColumn tableName="notification">
+            <column name="start_date" type="TIMESTAMP"/>
+            <column name="end_date" type="TIMESTAMP"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="NghiaNT" id="add_column_status_and_push_time_table_notification">
+        <addColumn tableName="notification">
+            <column name="push_time" type="TIMESTAMP"/>
+            <column name="status_push" type="varchar(50)"/>
+        </addColumn>
+    </changeSet>
+
+
+</databaseChangeLog>

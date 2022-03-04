@@ -1,0 +1,44 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+	<changeSet id="create_table_not_good" author="NghiaNT">
+		<createTable tableName="not_good">
+
+			<column name="id" type="int(11)" autoIncrement="true">
+				<constraints primaryKey="true"/>
+			</column>
+			<column name="customer_id" type="int(11)"/>
+			<column name="customer_name" type="varchar(60)"/>
+			<column name="customer_phone" type="varchar(20)"/>
+			<column name="staff_id" type="int(11)"/>
+			<column name="store_id" type="int(11)"/>
+			<column name="feedback" type="text"/>
+
+			<column name="created_time" type="TIMESTAMP"/>
+			<column name="updated_time" type="TIMESTAMP"/>
+			<column name="created_by_user_id" type="int(11)"/>
+			<column name="updated_by_user_id" type="int(11)"/>
+			<column name="is_deleted" type="boolean" defaultValueBoolean="false"/>
+		</createTable>
+
+		<modifySql dbms="mysql">
+			<append value="ENGINE=INNODB CHARSET=utf8mb4 COLLATE utf8mb4_unicode_520_ci"/>
+		</modifySql>
+	</changeSet>
+
+	<changeSet id="add_columns_assigned_date_and_booked_date" author="vy">
+		<addColumn tableName="not_good">
+			<column name="assigned_date" type="timestamp"/>
+			<column name="booked_date" type="timestamp"/>
+		</addColumn>
+	</changeSet>
+	
+	<changeSet id="add_column_name_of_staff_create" author="vy">
+		<addColumn tableName="not_good">
+			<column name="name_of_staff_create" type="varchar(60)"/>
+		</addColumn>
+	</changeSet>
+
+</databaseChangeLog>

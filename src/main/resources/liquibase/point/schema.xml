@@ -1,0 +1,72 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="create_table_point" author="NghiaNT">
+        <createTable tableName="point">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="store_id" type="int(11)"/>
+            <column name="store_name" type="text"/>
+            <column name="staff_id" type="int(11)"/>
+            <column name="staff_name" type="text"/>
+            <column name="customer_name" type="text"/>
+            <column name="customer_id" type="bigint" />
+            <column name="point_check_in" type="int(11)"/>
+            <column name="point_check_in_status" type="varchar(50)"/>
+            <column name="check_in_point_date" type="TIMESTAMP" />
+            <column name="point_use" type="int(11)"/>
+            <column name="point_use_status" type="varchar(50)"/>
+            <column name="use_point_date" type="TIMESTAMP" />
+            <column name="point_gacha" type="int(11)"/>
+            <column name="gacha_point_date" type="TIMESTAMP" />
+            <column name="point_review" type="int(11)"/>
+            <column name="review_point_date" type="TIMESTAMP" />
+            <column name="review_id" type="int(11)" />
+
+            <column name="created_time" type="TIMESTAMP"/>
+            <column name="updated_time" type="TIMESTAMP"/>
+            <column name="created_by_user_id" type="int(11)"/>
+            <column name="updated_by_user_id" type="int(11)"/>
+            <column name="is_deleted" type="boolean" defaultValueBoolean="false"/>
+        </createTable>
+
+        <modifySql dbms="mysql">
+            <append
+                    value="ENGINE=INNODB CHARSET=utf8mb4 COLLATE utf8mb4_unicode_520_ci"/>
+        </modifySql>
+    </changeSet>
+
+    <changeSet author="NghiaNT" id="add_column_deleted_by_store_table_point">
+        <addColumn tableName="point">
+            <column name="deleted_by_store" type="boolean" defaultValueBoolean="false"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="NghiaNT" id="add_column_send_by_store_table_point">
+        <addColumn tableName="point">
+            <column name="send_by_store" type="boolean" defaultValueBoolean="false"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="NghiaNT" id="add_column_is_seen_table_point">
+        <addColumn tableName="point">
+            <column name="is_seen" type="boolean" defaultValueBoolean="true"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="NghiaNT" id="add_column_gacha_prize_table_point">
+        <addColumn tableName="point">
+            <column name="gacha_prize" type="int(2)" defaultValueBoolean="0"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="NghiaNT" id="add_column_booking_id_and_point_send_type_table_point">
+        <addColumn tableName="point">
+            <column name="booking_id" type="int(11)" />
+            <column name="point_send_type" type="varchar(50)"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

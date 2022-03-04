@@ -1,0 +1,47 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+	<changeSet id="create_table_combo_order" author="NghiaNT">
+		<createTable tableName="combo_order">
+
+			<column name="id" type="int(11)" autoIncrement="true">
+				<constraints primaryKey="true"/>
+			</column>
+			<column name="calendar_order_id" type="int(11)"/>
+			<column name="combo_id" type="int(11)"/>
+			<column name="combo_pack_id" type="int(11)"/>
+
+			<column name="created_time" type="TIMESTAMP"/>
+			<column name="updated_time" type="TIMESTAMP"/>
+			<column name="created_by_user_id" type="int(11)"/>
+			<column name="updated_by_user_id" type="int(11)"/>
+			<column name="is_deleted" type="boolean" defaultValueBoolean="false"/>
+		</createTable>
+
+		<modifySql dbms="mysql">
+			<append value="ENGINE=INNODB CHARSET=utf8mb4 COLLATE utf8mb4_unicode_520_ci"/>
+		</modifySql>
+	</changeSet>
+
+	<changeSet id="add_column_option" author="NghiaNT">
+		<addColumn tableName="combo_order">
+			<column name="option" type="text"/>
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="rename_column" author="NghiaNT">
+		<renameColumn tableName="combo_order"
+					  columnDataType="text"
+					  oldColumnName="option"
+					  newColumnName="combo_option"/>
+	</changeSet>
+
+	<changeSet id="add_column_custom_minutes" author="vy">
+		<addColumn tableName="combo_order">
+			<column name="custom_minutes" type="int(6)"/>
+		</addColumn>
+	</changeSet>
+
+</databaseChangeLog>
