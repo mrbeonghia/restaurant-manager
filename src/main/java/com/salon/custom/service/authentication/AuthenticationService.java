@@ -122,7 +122,7 @@ public class AuthenticationService {
             Long authEventId = Long.valueOf(claims.get(AUTHENTICATION_ID).toString());
             String tokenType = claims.get(TOKEN_TYPE).toString();
             Optional<AuthenticationEventEntity> authEvent = authenticationEventService.findById(authEventId);
-            if (authEvent.isEmpty()) {
+            if (!authEvent.isPresent()) {
                 return new TokenVerifyResult(false);
             }
 
