@@ -104,7 +104,7 @@ public class UserAdminService extends BaseService<UserAdmin, UserAdminRepository
         UserResponse userResponse = new UserResponse();
 
         List<StoreEntity> storeEntities = storeService.getListStore();
-        var storeIdToEntity = StreamUtils.toMap(storeEntities, StoreEntity::getId);
+//        var storeIdToEntity = StreamUtils.toMap(storeEntities, StoreEntity::getId);
 
         Page<UserEntity> userEntities = userService.findAllAndIsDeletedFalse(search, storeId, pageable, sex, sort);
         List<UserDTO> userDTOS = new ArrayList<>();
@@ -113,12 +113,12 @@ public class UserAdminService extends BaseService<UserAdmin, UserAdminRepository
             UserDTO userDTO = new UserDTO();
             userService.populateUserDTO(userDTO, userEntity);
 
-            if (userEntity.getStoreId() != null) {
+            /*if (userEntity.getStoreId() != null) {
                 StoreEntity storeEntity = storeIdToEntity.get(userEntity.getStoreId());
                 if (storeEntity != null) {
                     userDTO.setStoreName(storeEntity.getName());
                 }
-            }
+            }*/
             userDTOS.add(userDTO);
         }
         userResponse.setUsers(userDTOS);

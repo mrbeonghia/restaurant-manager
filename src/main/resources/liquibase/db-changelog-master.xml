@@ -4,12 +4,5 @@
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
 
-    <include file="liquibase/store/schema.xml"/>
-    <include file="liquibase/user/schema.xml"/>
-    <include file="liquibase/user/event/schema.xml"/>
-    <include file="liquibase/user/user_admin/schema.xml"/>
-
-    <include file="liquibase/staff/schema.xml"/>
-
 
 </databaseChangeLog>

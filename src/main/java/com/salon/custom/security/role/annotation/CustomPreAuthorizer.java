@@ -11,7 +11,7 @@ public class CustomPreAuthorizer {
     public boolean isMatchUser(Long userId) {
         try {
             log.info("checking ... userId {}", userId);
-            var userDetails = (CustomUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            CustomUserDetail userDetails = (CustomUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             return userDetails.getUserEntity().getId().equals(userId);
         } catch (Exception exception) {
             return false;

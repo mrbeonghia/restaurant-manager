@@ -27,18 +27,5 @@ public enum StatusBooking {
         this.status = status;
     }
 
-    public static List<String> placedStatus() {
-        return List.of(ORDER.getStatus(), ARRIVE.getStatus(), DONE.getStatus());
-    }
-
-    public static List<String> allStatus() {
-        return List.of(ORDER.getStatus(), ARRIVE.getStatus(), DONE.getStatus(), CANCEL_FREE.getStatus(),
-                CANCEL_CONTACT.getStatus(), CANCEL_NO_CONTACT.getStatus(), CANCEL_BY_STORE.getStatus());
-    }
-
-    public static List<String> historyStatus() {
-        return List.of(DONE.getStatus(), CANCEL_FREE.getStatus(), CANCEL_CONTACT.getStatus(),
-                CANCEL_NO_CONTACT.getStatus(), CANCEL_BY_STORE.getStatus());
-    }
 
 }
