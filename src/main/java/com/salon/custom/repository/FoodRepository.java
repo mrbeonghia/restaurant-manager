@@ -14,6 +14,5 @@ public interface FoodRepository extends BaseRepository<Food> {
 
     Page<Food> findByDeletedFalse(Pageable pageable);
 
-    Page<Food> findByCategoryAndDeletedFalse(Pageable pageable);
 
 }
