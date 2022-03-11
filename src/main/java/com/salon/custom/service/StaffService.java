@@ -8,6 +8,7 @@ import com.salon.custom.dto.staff.StaffResponse;
 import com.salon.custom.dto.staff.StaffSignInDTO;
 import com.salon.custom.dto.user.UserDTO;
 import com.salon.custom.dto.user.UserResponse;
+import com.salon.custom.entities.RoleEntity;
 import com.salon.custom.entities.Staff;
 import com.salon.custom.entities.UserEntity;
 import com.salon.custom.enums.Roles;
@@ -35,6 +36,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.salon.custom.util.Constant.LENGTH_PWD_STAFF_DEFAULT;
 import static com.salon.custom.util.Constant.SECRET_KEY;
@@ -51,6 +54,9 @@ public class StaffService extends BaseService<Staff, StaffRepository> {
     @Autowired
     private AuthenticationEventService authenticationEventService;
 
+    @Autowired
+    private RoleService roleService;
+
     public StaffResponse staffLogIn(StaffSignInDTO staffSignInDTO) {
         Staff staff = repository.findByPhoneNumberAndDeletedFalse(staffSignInDTO.getPhone());
         if (staff == null) {
@@ -66,11 +72,17 @@ public class StaffService extends BaseService<Staff, StaffRepository> {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(customUserDetail, staff.getPassword());
 
+        List<RoleEntity> roles = roleService.getAllRoles();
+        Map<Long, String> idToRole = roles.stream().collect(Collectors.toMap(RoleEntity::getId, RoleEntity::getName));
+
         StaffResponse staffResponse = new StaffResponse();
         String refreshToken = authenticationService.createRefreshToken(authenticationToken);
         try {
             String accessToken = authenticationService.createAccessToken(refreshToken);
             StaffDTO staffDTO = toDTO(staff);
+
+
+
             LoginResult result = new LoginResult();
             result.setRefreshToken(refreshToken);
             result.setAccessToken(accessToken);
@@ -94,6 +106,8 @@ public class StaffService extends BaseService<Staff, StaffRepository> {
         staffDTO.setPhoneNumber(staff.getPhoneNumber());
         staffDTO.setEmail(staff.getEmail());
         staffDTO.setGender(staff.getGender());
+        staffDTO.setRole(staff.getRole().getName());
+        staffDTO.setType(staff.getRole().getName());
         return staffDTO;
     }
 

@@ -26,5 +26,6 @@ public class StaffDTO implements Serializable {
     private String password;
     private Boolean isActive;
     private String role;
+    private String type;
 
 }
