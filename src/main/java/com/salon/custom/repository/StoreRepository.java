@@ -1,3 +1,4 @@
+/*
 package com.salon.custom.repository;
 
 import com.salon.base.core.BaseRepository;
@@ -59,3 +60,4 @@ public interface StoreRepository extends BaseRepository<StoreEntity> {
     Integer findMaxBedOfStore(Long storeId);
 
 }
+*/

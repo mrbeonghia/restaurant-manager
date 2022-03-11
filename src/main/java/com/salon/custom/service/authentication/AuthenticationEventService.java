@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -33,9 +34,7 @@ public class AuthenticationEventService extends BaseService<AuthenticationEventE
         return repository.save(eventEntity);
     }
 
-    public void deleteAuthEvent(Long userId) {
-        repository.updateLogoutUser(userId);
-    }
+
 
     @Transactional
     public void setAuthenticationEventLogout(Long eventId){
@@ -48,7 +47,7 @@ public class AuthenticationEventService extends BaseService<AuthenticationEventE
 
     @Transactional
     public void setAuthenticationEventLogoutByUserId(Integer userId, UserType userType){
-        List<AuthenticationEventEntity> eventEntities = repository.findByUserIdAndUserType(userId,userType);
+        List<AuthenticationEventEntity> eventEntities = new ArrayList<>();
         for (AuthenticationEventEntity eventEntity : eventEntities){
             eventEntity.setLogout(true);
             repository.save(eventEntity);

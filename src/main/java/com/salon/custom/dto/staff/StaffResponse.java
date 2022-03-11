@@ -2,9 +2,9 @@ package com.salon.custom.dto.staff;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.salon.custom.dto.LoginResult;
 import com.salon.custom.dto.base.BaseResponse;
 import com.salon.custom.dto.base.PageDto;
-import com.salon.custom.dto.user.LoginResult;
 import lombok.Getter;
 import lombok.Setter;
 

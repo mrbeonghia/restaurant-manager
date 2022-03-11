@@ -16,8 +16,6 @@
 			<column name="address" type="varchar(255)"/>
 			<column name="open_time" type="varchar(50)"/>
 			<column name="close_time" type="varchar(50)"/>
-			<column name="longitude" type="varchar(50)"/>
-			<column name="latitude" type="varchar(50)"/>
 
 			<column name="created_time" type="TIMESTAMP"/>
 			<column name="updated_time" type="TIMESTAMP"/>
@@ -31,58 +29,5 @@
 		</modifySql>
 	</changeSet>
 
-	<changeSet author="HopDV" id="add_column_imageMapUlr_table_store">
-		<addColumn tableName="store">
-			<column name="image_map_url" type="text"/>
-		</addColumn>
-	</changeSet>
-	<changeSet author="HopDV" id="add_column_position_table_store">
-		<addColumn tableName="store">
-			<column name="position" type="int(11)"/>
-		</addColumn>
-	</changeSet>
-	<changeSet author="HopDV" id="add_column_is_booking_table_store">
-		<addColumn tableName="store">
-			<column name="is_booking" type="boolean" defaultValueBoolean="true"/>
-		</addColumn>
-	</changeSet>
-
-	<changeSet author="NghiaNT" id="add_column_point_check_in_table_store">
-		<addColumn tableName="store">
-			<column name="point_check_in" type="int(11)"/>
-		</addColumn>
-	</changeSet>
-	<changeSet author="NghiaNT" id="add_column_point_review_table_store">
-		<addColumn tableName="store">
-			<column name="point_review" type="int(11)" />
-		</addColumn>
-	</changeSet>
-	<changeSet author="NghiaNT" id="add_column_qr_code_image_table_store">
-		<addColumn tableName="store">
-			<column name="qr_code_image" type="text" />
-		</addColumn>
-	</changeSet>
-	<changeSet author="NghiaNT" id="add_column_qr_code_uuid_table_store">
-		<addColumn tableName="store">
-			<column name="qr_code_uuid" type="text" />
-		</addColumn>
-	</changeSet>
-	<changeSet author="NghiaNT" id="add_column_store_url_table_store">
-		<addColumn tableName="store">
-			<column name="store_url" type="text" />
-		</addColumn>
-	</changeSet>
-
-	<changeSet author="NghiaNT" id="add_column_bed_table_store">
-		<addColumn tableName="store">
-			<column name="bed" type="int(4)" />
-		</addColumn>
-	</changeSet>
-
-	<changeSet author="NghiaNT" id="add_column_store_code_table_store">
-		<addColumn tableName="store">
-			<column name="store_code" type="varchar(20)" />
-		</addColumn>
-	</changeSet>
 
 </databaseChangeLog>

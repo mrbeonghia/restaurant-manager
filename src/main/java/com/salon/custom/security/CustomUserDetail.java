@@ -1,11 +1,9 @@
 package com.salon.custom.security;
 
-import com.salon.custom.entities.StaffEntity;
+import com.salon.custom.entities.Staff;
 import com.salon.custom.entities.UserAdmin;
 import com.salon.custom.entities.UserEntity;
-import com.salon.custom.enums.Roles;
 import com.salon.custom.enums.UserType;
-import com.salon.custom.util.Constant;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 public class CustomUserDetail implements UserDetails {
 
@@ -21,7 +18,7 @@ public class CustomUserDetail implements UserDetails {
 
     UserAdmin userAdmin;
 
-    StaffEntity staffEntity;
+    Staff staff;
 
     UserType userType;
 
@@ -38,10 +35,10 @@ public class CustomUserDetail implements UserDetails {
         this.userAdmin = userAdmin;
     }
 
-    public CustomUserDetail(StaffEntity staffEntity) {
+    public CustomUserDetail(Staff staff) {
         super();
         this.userType = UserType.STAFF_USER;
-        this.staffEntity = staffEntity;
+        this.staff = staff;
     }
 
     @Override
@@ -53,12 +50,12 @@ public class CustomUserDetail implements UserDetails {
     }
 
     public Long getUserId() {
-        if (userEntity == null && userAdmin == null && staffEntity == null)
+        if (userEntity == null && userAdmin == null && staff == null)
             return null;
         if (userEntity != null)
             return userEntity.getId();
-        if (staffEntity != null)
-            return staffEntity.getId();
+        if (staff != null)
+            return staff.getId();
         return userAdmin.getId();
     }
 
@@ -68,10 +65,10 @@ public class CustomUserDetail implements UserDetails {
         if (this.userType.equals(UserType.SYSTEM_USER)){
             return userAdmin.getPassword();
         }
-        if (this.userType.equals(UserType.APP_USER)){
+        /*if (this.userType.equals(UserType.APP_USER)){
             return userEntity.getPassword();
-        }
-        return staffEntity.getPassword();
+        }*/
+        return staff.getPassword();
     }
 
     @Override
@@ -80,10 +77,10 @@ public class CustomUserDetail implements UserDetails {
         if (this.userType.equals(UserType.SYSTEM_USER)){
             return userAdmin.getEmail();
         }
-        if (this.userType.equals(UserType.APP_USER)){
+        /*if (this.userType.equals(UserType.APP_USER)){
             return userEntity.getEmail();
-        }
-        return staffEntity.getPhoneNumber();
+        }*/
+        return staff.getPhoneNumber();
     }
 
     @Override
@@ -130,11 +127,11 @@ public class CustomUserDetail implements UserDetails {
         this.userAdmin = userAdmin;
     }
 
-    public StaffEntity getStaffEntity() {
-        return staffEntity;
+    public Staff getStaffEntity() {
+        return staff;
     }
 
-    public void setStaffEntity(StaffEntity staffEntity) {
-        this.staffEntity = staffEntity;
+    public void setStaffEntity(Staff staff) {
+        this.staff = staff;
     }
 }

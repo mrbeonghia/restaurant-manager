@@ -1,3 +1,4 @@
+/*
 package com.salon.custom.rest;
 
 import com.salon.base.core.BaseResource;
@@ -79,3 +80,4 @@ public class CouponResource extends BaseResource<CouponService> {
         return ResponseEntity.ok().body(couponResponse);
     }
 }
+*/

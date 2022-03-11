@@ -1,3 +1,4 @@
+/*
 package com.salon.custom.service;
 
 import com.salon.base.core.BaseService;
@@ -113,12 +114,14 @@ public class UserAdminService extends BaseService<UserAdmin, UserAdminRepository
             UserDTO userDTO = new UserDTO();
             userService.populateUserDTO(userDTO, userEntity);
 
-            /*if (userEntity.getStoreId() != null) {
+            */
+/*if (userEntity.getStoreId() != null) {
                 StoreEntity storeEntity = storeIdToEntity.get(userEntity.getStoreId());
                 if (storeEntity != null) {
                     userDTO.setStoreName(storeEntity.getName());
                 }
-            }*/
+            }*//*
+
             userDTOS.add(userDTO);
         }
         userResponse.setUsers(userDTOS);
@@ -546,7 +549,8 @@ public class UserAdminService extends BaseService<UserAdmin, UserAdminRepository
         return userDTOS;
     }
 
-    /*public ByteArrayInputStream generateCsvResponse(String search, Long storeId, String sex, String sort) {
+    */
+/*public ByteArrayInputStream generateCsvResponse(String search, Long storeId, String sex, String sort) {
         CSVFormat format = CSVFormat.DEFAULT.withHeader("ID", "ユーザー名", "ふりがな", "電話番号", "登録日", "住所", "性別", "店舗", "メール");
         List<UserDTO> userDTOS = getUserAppToCsv(search, storeId, sex, sort);
         try (ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -607,7 +611,8 @@ public class UserAdminService extends BaseService<UserAdmin, UserAdminRepository
         } catch (IOException e) {
             throw new RuntimeException("Fail to import data to CSV file: " + e.getMessage());
         }
-    }*/
+    }*//*
+
 
 
     public ByteArrayInputStream generateExcel(String search, Long storeId, String sex, String sort) {
@@ -617,3 +622,4 @@ public class UserAdminService extends BaseService<UserAdmin, UserAdminRepository
 
 
 }
+*/

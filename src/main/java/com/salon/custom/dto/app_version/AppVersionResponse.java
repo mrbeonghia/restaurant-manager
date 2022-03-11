@@ -2,7 +2,6 @@ package com.salon.custom.dto.app_version;
 
 import com.salon.custom.dto.base.BaseResponse;
 import com.salon.custom.dto.base.PageDto;
-import com.salon.custom.dto.combo.combo.ComboDTO;
 import lombok.Getter;
 import lombok.Setter;
 

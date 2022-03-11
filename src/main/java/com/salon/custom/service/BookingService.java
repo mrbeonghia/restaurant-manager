@@ -1,3 +1,4 @@
+/*
 package com.salon.custom.service;
 
 import com.salon.base.email.EmailService;
@@ -29,3 +30,4 @@ public class BookingService  {
     private UserAdminService userAdminService;
 
 }
+*/

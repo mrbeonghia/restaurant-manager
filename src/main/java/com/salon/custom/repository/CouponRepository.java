@@ -1,8 +1,8 @@
+/*
 package com.salon.custom.repository;
 
 import com.salon.base.core.BaseRepository;
-import com.salon.custom.dto.coupon.CouponDTO;
-import com.salon.custom.entities.CouponEntity;
+import com.salon.custom.entities.Coupon;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -13,44 +13,45 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface CouponRepository extends BaseRepository<CouponEntity> {
+public interface CouponRepository extends BaseRepository<Coupon> {
 
     @Query(value = "SELECT ce " +
-            "FROM CouponEntity ce " +
+            "FROM Coupon ce " +
             "WHERE ce.endDate >= :dateNow " +
             "AND ce.isDeleted = false ORDER BY ce.id DESC ")
-    Page<CouponEntity> findAllEndDateGreatThanDateNow(@Param("dateNow") Date dateNow, Pageable pageable);
+    Page<Coupon> findAllEndDateGreatThanDateNow(@Param("dateNow") Date dateNow, Pageable pageable);
 
 
     @Query(value = "SELECT ce " +
-            "FROM CouponEntity ce " +
+            "FROM Coupon ce " +
             "WHERE ce.endDate >= :dateNow AND ce.startDate <= :dateNow AND ce.storeId IN (:storeIds) " +
             "AND ce.isDeleted = false ORDER BY ce.id DESC ")
-    Page<CouponEntity> findAllCouponByDate(@Param("dateNow") Date dateNow, @Param("storeIds") List<Long> storeIds,
-                                           Pageable pageable);
+    Page<Coupon> findAllCouponByDate(@Param("dateNow") Date dateNow, @Param("storeIds") List<Long> storeIds,
+                                     Pageable pageable);
 
     @Query(value = "SELECT ce " +
-            "FROM CouponEntity ce " +
+            "FROM Coupon ce " +
             "WHERE ce.endDate >= :dateNow AND ce.startDate <= :dateNow AND ce.storeId IN (:storeIds) " +
             "AND ce.isDeleted = false ORDER BY ce.id DESC ")
-    List<CouponEntity> findAllCouponByDate(@Param("dateNow") Date dateNow, @Param("storeIds") List<Long> storeIds);
+    List<Coupon> findAllCouponByDate(@Param("dateNow") Date dateNow, @Param("storeIds") List<Long> storeIds);
 
     @Query(value = "SELECT ce " +
-            "FROM CouponEntity ce " +
+            "FROM Coupon ce " +
             "WHERE ce.storeId IN :storeId " +
             "AND ce.isDeleted = false ORDER BY ce.id DESC  ")
-    Page<CouponEntity> findAllForStoreAdmin(@Param("storeId") List<Long> storeIds, Pageable pageable);
+    Page<Coupon> findAllForStoreAdmin(@Param("storeId") List<Long> storeIds, Pageable pageable);
 
     @Query(value = "SELECT ce " +
-            "FROM CouponEntity ce WHERE (ce.storeId is null OR ce.storeId = :storeId) " +
+            "FROM Coupon ce WHERE (ce.storeId is null OR ce.storeId = :storeId) " +
             "AND ce.isDeleted = false ORDER BY ce.id DESC  ")
-    Page<CouponEntity> findAllForAdmin(@Param("storeId") Long storeId, Pageable pageable);
+    Page<Coupon> findAllForAdmin(@Param("storeId") Long storeId, Pageable pageable);
 
-    Page<CouponEntity> findAllByIsDeletedFalseOrderByIdDesc(Pageable pageable);
+    Page<Coupon> findAllByIsDeletedFalseOrderByIdDesc(Pageable pageable);
 
-    List<CouponEntity> findAllByIsDeletedFalse();
+    List<Coupon> findAllByIsDeletedFalse();
 
-    CouponEntity findByIdAndIsDeletedFalse(Long couponId);
+    Coupon findByIdAndIsDeletedFalse(Long couponId);
 
-    List<CouponEntity> findByIdIn(List<Long> couponIds);
+    List<Coupon> findByIdIn(List<Long> couponIds);
 }
+*/

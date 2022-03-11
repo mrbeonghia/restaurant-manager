@@ -1,3 +1,4 @@
+/*
 package com.salon.custom.repository;
 
 import com.salon.base.core.BaseRepository;
@@ -43,3 +44,4 @@ public interface UserAdminRepository extends BaseRepository<UserAdmin> {
     List<UserAdmin> findAllUserAdminByType(@Param("type") String type);
 
 }
+*/

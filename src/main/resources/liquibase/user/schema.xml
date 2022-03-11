@@ -41,38 +41,4 @@
 <!--		<addUniqueConstraint columnNames="email, is_deleted" tableName="user_entity"/>-->
 <!--	</changeSet>-->
 
-	<changeSet author="NghiaNT" id="add_column_point_table_user_entity">
-		<addColumn tableName="user_entity">
-			<column name="number_of_points" type="int"/>
-		</addColumn>
-	</changeSet>
-
-	<changeSet author="NghiaNT" id="add_column_customer_id_table_user_entity">
-		<addColumn tableName="user_entity">
-			<column name="customer_id" type="bigint"/>
-		</addColumn>
-	</changeSet>
-
-	<changeSet author="NghiaNT" id="add_column_furigana_name_table_user_entity">
-		<addColumn tableName="user_entity">
-			<column name="furigana_name" type="varchar(60)"/>
-		</addColumn>
-	</changeSet>
-
-<!--	<changeSet  author="NghiaNT"  id="drop_unique_constraint_table_user_entity">-->
-<!--		<dropUniqueConstraint-->
-<!--							   constraintName="email"-->
-<!--							   tableName="user_entity"-->
-<!--							   uniqueColumns="email, is_deleted"/>-->
-<!--	</changeSet>-->
-
-	<changeSet author="NghiaNT" id="created_unique_constraint_table_user_entity">
-		<addUniqueConstraint columnNames="email, is_deleted, is_active" tableName="user_entity"/>
-	</changeSet>
-
-	<changeSet author="NghiaNT" id="add_column_background_disease_table_user_entity">
-		<addColumn tableName="user_entity">
-			<column name="background_disease" type="text"/>
-		</addColumn>
-	</changeSet>
 </databaseChangeLog>

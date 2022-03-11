@@ -66,7 +66,8 @@ public abstract class BaseService<E extends BaseEntity, R extends BaseRepository
     }
 
     public void preSave(E entity) {
-
+        entity.setCreatedTime(new Date());
+        entity.setUpdatedTime(new Date());
     }
 
     /**
@@ -110,6 +111,6 @@ public abstract class BaseService<E extends BaseEntity, R extends BaseRepository
 	 * @return
 	 */
 	public Page<E> findAll(Pageable page, boolean isDeleted) {
-		return repository.findByIsDeleted(page, isDeleted);
+		return repository.findByDeleted(page, isDeleted);
 	}
 }

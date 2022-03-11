@@ -1,3 +1,4 @@
+/*
 package com.salon.custom.service;
 
 import com.google.zxing.*;
@@ -6,16 +7,13 @@ import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 import com.salon.base.core.BaseService;
 import com.salon.base.security.CurrentUserDetailsContainer;
-import com.salon.custom.dto.FileDTO;
 import com.salon.custom.dto.store.*;
 import com.salon.custom.dto.user.UserDTO;
-import com.salon.custom.entities.StaffEntity;
 import com.salon.custom.entities.StoreEntity;
 import com.salon.custom.entities.UserAdmin;
 import com.salon.custom.enums.Roles;
 import com.salon.custom.exception.BaseException;
 import com.salon.custom.repository.StoreRepository;
-import com.salon.custom.security.role.annotation.IsStaffUser;
 import com.salon.custom.security.role.annotation.IsSystemUser;
 import com.salon.custom.util.Constant;
 import org.json.JSONArray;
@@ -345,10 +343,12 @@ public class StoreService extends BaseService<StoreEntity, StoreRepository> {
         StoreResponse storeResponse = new StoreResponse();
         if (changePositionRequest != null && changePositionRequest.getStorePosition() != null) {
             List<List<Long>> arrayPosition = changePositionRequest.getStorePosition();
-            /*int update = repository.updatePosition(arrayPosition);
+            */
+/*int update = repository.updatePosition(arrayPosition);
             if (update < 0) {
                 storeResponse.setSuccess(false);
-            }*/
+            }*//*
+
         } else {
             storeResponse.setSuccess(false);
         }
@@ -474,11 +474,13 @@ public class StoreService extends BaseService<StoreEntity, StoreRepository> {
         return result.getText();
     }
 
-    /*public String createQrCode(String randomUUID) {
+    */
+/*public String createQrCode(String randomUUID) {
         FileDTO fileDTO = fileService.uploadFileBytes(getQRCodeImage(randomUUID, 400, 400),
                 "image", UUID.randomUUID() + ".png", "qr_code");
         return fileDTO.getFileUrl();
-    }*/
+    }*//*
+
 
     public StoreEntity getStoreByQrcode(String qrCode) {
         return repository.findByQrCodeUUIDAndIsDeletedFalse(qrCode);
@@ -545,3 +547,4 @@ public class StoreService extends BaseService<StoreEntity, StoreRepository> {
 
 
 }
+*/

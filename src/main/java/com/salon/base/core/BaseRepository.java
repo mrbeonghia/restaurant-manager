@@ -16,5 +16,5 @@ public interface BaseRepository<E extends BaseEntity> extends PagingAndSortingRe
 
     Optional<E> findById(Long id);
 
-    Page<E> findByIsDeleted(Pageable page, boolean isDeleted);
+    Page<E> findByDeleted(Pageable page, boolean isDeleted);
 }

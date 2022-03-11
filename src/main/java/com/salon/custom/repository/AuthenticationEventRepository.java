@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface AuthenticationEventRepository extends BaseRepository<AuthenticationEventEntity> {
-    @Query(value = "select * from auth_event where (timeout * 60 - (UNIX_TIMESTAMP() - UNIX_TIMESTAMP(created_time))) > 0",
+    /*@Query(value = "select * from auth_event where (timeout * 60 - (UNIX_TIMESTAMP() - UNIX_TIMESTAMP(created_time))) > 0",
             nativeQuery = true)
     List<AuthenticationEventEntity> getAllWithValidateTimeout();
 
@@ -21,6 +21,6 @@ public interface AuthenticationEventRepository extends BaseRepository<Authentica
     List<AuthenticationEventEntity> findByUserIdAndUserType(Integer userId, UserType userType);
 
     @Modifying
-    @Query(value = "UPDATE AuthenticationEventEntity a SET a.isLogout = true WHERE a.userId = :userId and a.isDeleted = false ")
-    int updateLogoutUser(@Param("userId") Long userId);
+    @Query(value = "UPDATE AuthenticationEventEntity a SET a.isLogout = true WHERE a.userId = :userId ")
+    int updateLogoutUser(@Param("userId") Long userId);*/
 }

@@ -16,7 +16,7 @@ public class StoreEntity extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "owner_id")
+    /*@Column(name = "owner_id")
     private Long ownerId;
 
     @Column(name = "phone")
@@ -67,17 +67,10 @@ public class StoreEntity extends BaseEntity {
     @Column(name = "store_url")
     private String storeUrl;
 
-    private Integer bed;
+    private Integer bed;*/
 
     @Column(name = "store_code")
     @Enumerated(EnumType.STRING)
     private StoreCode storeCode;
 
-    public Boolean getBooking() {
-        return isBooking;
-    }
-
-    public void setBooking(Boolean booking) {
-        isBooking = booking;
-    }
 }

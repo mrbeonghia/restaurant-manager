@@ -1,3 +1,4 @@
+/*
 package com.salon.custom.service;
 
 import com.salon.base.core.BaseService;
@@ -20,7 +21,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class CouponService extends BaseService<CouponEntity, CouponRepository> {
+public class CouponService extends BaseService<Coupon, CouponRepository> {
 
     @Autowired
     private StoreService storeService;
@@ -35,16 +36,18 @@ public class CouponService extends BaseService<CouponEntity, CouponRepository> {
     private final long ALL_STORE_ID = 0L;
 
 
-    private void populateCoupon(CouponResponse couponResponse, Page<CouponEntity> couponEntities) {
+    private void populateCoupon(CouponResponse couponResponse, Page<Coupon> couponEntities) {
         if (!couponEntities.isEmpty()) {
         }
         List<CouponDTO> couponDTOS = new ArrayList<>();
         Set<Long> storeIds = new HashSet<>();
-        for (CouponEntity couponEntity : couponEntities.getContent()) {
-            if (couponEntity.getStoreId() != null) {
-                storeIds.add(couponEntity.getStoreId());
+        */
+/*for (Coupon coupon : couponEntities.getContent()) {
+            if (coupon.getStoreId() != null) {
+                storeIds.add(coupon.getStoreId());
             }
-        }
+        }*//*
+
         Map<Long, StoreDTO> mapStore = new HashMap<>();
         if (storeIds.size() > 0) {
             List<StoreEntity> storeEntities = storeService.findByIdIn(storeIds);
@@ -58,10 +61,10 @@ public class CouponService extends BaseService<CouponEntity, CouponRepository> {
                 mapStore.put(storeDTO.getId(), storeDTO);
             }
         }
-        for (CouponEntity couponEntity : couponEntities.getContent()) {
-            CouponDTO couponDTO = toDto(couponEntity);
-            if (couponEntity.getStoreId() != null) {
-                couponDTO.setStore(mapStore.get(couponEntity.getStoreId()));
+        for (Coupon coupon : couponEntities.getContent()) {
+            CouponDTO couponDTO = toDto(coupon);
+            if (coupon.getStoreId() != null) {
+                couponDTO.setStore(mapStore.get(coupon.getStoreId()));
             }
             couponDTOS.add(couponDTO);
         }
@@ -73,7 +76,7 @@ public class CouponService extends BaseService<CouponEntity, CouponRepository> {
     public CouponResponse getAllCouponForApp(Pageable pageable) {
         CouponResponse couponResponse = new CouponResponse();
         Date dateNow = new Date();
-        Page<CouponEntity> couponEntities = repository.findAllEndDateGreatThanDateNow(dateNow, pageable);
+        Page<Coupon> couponEntities = repository.findAllEndDateGreatThanDateNow(dateNow, pageable);
         populateCoupon(couponResponse, couponEntities);
         return couponResponse;
     }
@@ -93,14 +96,14 @@ public class CouponService extends BaseService<CouponEntity, CouponRepository> {
         }
 
         List<CouponDTO> couponDTOS = new ArrayList<>();
-        Page<CouponEntity> couponEntities = repository.findAllCouponByDate(dateNow, storeIds, pageable);
+        Page<Coupon> couponEntities = repository.findAllCouponByDate(dateNow, storeIds, pageable);
         List<StoreEntity> storeEntities = storeService.getListStoreByIds(storeIds);
         Map<Long, StoreEntity> storeEntityMap = new HashMap<>();
         for (StoreEntity storeEntity : storeEntities) {
             storeEntityMap.put(storeEntity.getId(), storeEntity);
         }
-        for (CouponEntity couponEntity : couponEntities.getContent()) {
-            getCouponDTO(couponDTOS, storeEntityMap, couponEntity);
+        for (Coupon coupon : couponEntities.getContent()) {
+            getCouponDTO(couponDTOS, storeEntityMap, coupon);
         }
         couponResponse.setCouponDTOList(couponDTOS);
         couponResponse.setPageDto(populatePageDto(couponEntities));
@@ -118,39 +121,40 @@ public class CouponService extends BaseService<CouponEntity, CouponRepository> {
         }
 
         List<CouponDTO> couponDTOS = new ArrayList<>();
-        List<CouponEntity> couponEntities = repository.findAllCouponByDate(dateNow, storeIds);
+        List<Coupon> couponEntities = repository.findAllCouponByDate(dateNow, storeIds);
         List<StoreEntity> storeEntities = storeService.getListStoreByIds(storeIds);
         Map<Long, StoreEntity> storeEntityMap = new HashMap<>();
         for (StoreEntity storeEntity : storeEntities) {
             storeEntityMap.put(storeEntity.getId(), storeEntity);
         }
-        for (CouponEntity couponEntity : couponEntities) {
-            getCouponDTO(couponDTOS, storeEntityMap, couponEntity);
+        for (Coupon coupon : couponEntities) {
+            getCouponDTO(couponDTOS, storeEntityMap, coupon);
         }
         return couponDTOS;
     }
 
-    private void getCouponDTO(List<CouponDTO> couponDTOS, Map<Long, StoreEntity> storeEntityMap, CouponEntity couponEntity) {
-        CouponDTO couponDTO = toDto(couponEntity);
-        if (couponEntity.getStoreId() == ALL_STORE_ID || couponEntity.getStoreId() == null) {
+    private void getCouponDTO(List<CouponDTO> couponDTOS, Map<Long, StoreEntity> storeEntityMap, Coupon coupon) {
+        CouponDTO couponDTO = toDto(coupon);
+        if (coupon.getStoreId() == ALL_STORE_ID || coupon.getStoreId() == null) {
             couponDTO.setStoreName(Constant.COUPON_ALL_STORE);
         } else {
-            StoreEntity storeEntity = storeEntityMap.get(couponEntity.getStoreId());
+            StoreEntity storeEntity = storeEntityMap.get(coupon.getStoreId());
             couponDTO.setStoreName(storeEntity.getName());
         }
         couponDTOS.add(couponDTO);
     }
 
 
-    /*private CouponResponse findCouponUserApp(Pageable pageable, CouponResponse couponResponse, Date dateNow, List<Long> storeIds) {
+    */
+/*private CouponResponse findCouponUserApp(Pageable pageable, CouponResponse couponResponse, Date dateNow, List<Long> storeIds) {
         List<CouponDTO> couponDTOS = new ArrayList<>();
-        Page<CouponEntity> couponEntities = repository.findAllCouponByDate(dateNow, storeIds, pageable);
+        Page<Coupon> couponEntities = repository.findAllCouponByDate(dateNow, storeIds, pageable);
         List<StoreEntity> storeEntities = storeService.getListStoreByIds(storeIds);
         Map<Long, StoreEntity> storeEntityMap = new HashMap<>();
         for (StoreEntity storeEntity : storeEntities){
             storeEntityMap.put(storeEntity.getId(), storeEntity);
         }
-        for (CouponEntity couponEntity : couponEntities.getContent()) {
+        for (Coupon couponEntity : couponEntities.getContent()) {
             CouponDTO couponDTO = toDto(couponEntity);
             if (couponEntity.getStoreId() == ALL_STORE_ID || couponEntity.getStoreId() == null){
                 couponDTO.setStoreName("全店舗");
@@ -163,13 +167,14 @@ public class CouponService extends BaseService<CouponEntity, CouponRepository> {
         couponResponse.setCouponDTOList(couponDTOS);
         couponResponse.setPageDto(populatePageDto(couponEntities));
         return couponResponse;
-    }*/
+    }*//*
+
 
 
     public CouponResponse getAllCouponForAdmin(UserAdmin userAdmin, Pageable pageable, Long storeId) {
         CouponResponse couponResponse = new CouponResponse();
         if (userAdmin != null && userAdmin.getType().equals(Roles.SYSTEM_ADMIN.getName())) {
-            Page<CouponEntity> couponEntities;
+            Page<Coupon> couponEntities;
             if (storeId == null) {
                 couponEntities = repository.findAllByIsDeletedFalseOrderByIdDesc(pageable);
             } else {
@@ -181,7 +186,7 @@ public class CouponService extends BaseService<CouponEntity, CouponRepository> {
             List<Long> storeIds = new ArrayList<>();
             storeIds.add(ALL_STORE_ID);
             storeIds.add(storeIdOwner);
-            Page<CouponEntity> couponEntities = repository.findAllForStoreAdmin(storeIds, pageable);
+            Page<Coupon> couponEntities = repository.findAllForStoreAdmin(storeIds, pageable);
             populateCoupon(couponResponse, couponEntities);
         } else {
             return couponResponse;
@@ -194,13 +199,13 @@ public class CouponService extends BaseService<CouponEntity, CouponRepository> {
     public CouponResponse createCoupon(UserAdmin userAdmin, CouponRequest couponRequest) {
         CouponResponse couponResponse = new CouponResponse();
         if (userAdmin != null) {
-            CouponEntity couponEntity = new CouponEntity();
-            toEntity(couponEntity, couponRequest);
-            couponEntity.setId(null);
-            setStoreId(userAdmin, couponRequest, couponEntity);
-            preSave(couponEntity);
-            CouponEntity couponEntityResult = repository.save(couponEntity);
-            couponResponse.setCouponDTO(toDto(couponEntityResult));
+            Coupon coupon = new Coupon();
+            toEntity(coupon, couponRequest);
+            coupon.setId(null);
+            setStoreId(userAdmin, couponRequest, coupon);
+            preSave(coupon);
+            Coupon couponResult = repository.save(coupon);
+            couponResponse.setCouponDTO(toDto(couponResult));
         }
         return couponResponse;
     }
@@ -209,13 +214,13 @@ public class CouponService extends BaseService<CouponEntity, CouponRepository> {
     public CouponResponse updateCoupon(UserAdmin userAdmin, CouponRequest couponRequest) {
         CouponResponse couponResponse = new CouponResponse();
         if (userAdmin != null) {
-            CouponEntity couponEntity = repository.findByIdAndIsDeletedFalse(couponRequest.getId());
-            if (couponEntity != null) {
-                toEntity(couponEntity, couponRequest);
-                setStoreId(userAdmin, couponRequest, couponEntity);
-                update(couponEntity);
-                CouponDTO couponDTO = toDto(couponEntity);
-                String storeName = storeService.getStoreNameById(couponEntity.getStoreId());
+            Coupon coupon = repository.findByIdAndIsDeletedFalse(couponRequest.getId());
+            if (coupon != null) {
+                toEntity(coupon, couponRequest);
+                setStoreId(userAdmin, couponRequest, coupon);
+                update(coupon);
+                CouponDTO couponDTO = toDto(coupon);
+                String storeName = storeService.getStoreNameById(coupon.getStoreId());
                 couponDTO.setStoreName(storeName);
                 couponResponse.setCouponDTO(couponDTO);
             }
@@ -224,7 +229,7 @@ public class CouponService extends BaseService<CouponEntity, CouponRepository> {
         return couponResponse;
     }
 
-    private void setStoreId(UserAdmin userAdmin, CouponRequest couponRequest, CouponEntity couponEntity) {
+    private void setStoreId(UserAdmin userAdmin, CouponRequest couponRequest, Coupon coupon) {
         Long storeId;
         if (Roles.STORE_ADMIN.getName().equals(userAdmin.getType())) {
             storeId = storeService.findByOwnerId(userAdmin.getId());
@@ -234,50 +239,50 @@ public class CouponService extends BaseService<CouponEntity, CouponRepository> {
         if (storeId == null) {
             storeId = ALL_STORE_ID;
         }
-        couponEntity.setStoreId(storeId);
+        coupon.setStoreId(storeId);
     }
 
     @Transactional
     public CouponResponse deleteCoupon(Long couponId) {
         CouponResponse couponResponse = new CouponResponse();
-        CouponEntity couponEntity = repository.findByIdAndIsDeletedFalse(couponId);
-        if (couponEntity == null) {
+        Coupon coupon = repository.findByIdAndIsDeletedFalse(couponId);
+        if (coupon == null) {
             return new CouponResponse("Coupon not exist", 4004);
         }
-        couponEntity.setDeleted(true);
-        update(couponEntity);
+        coupon.setDeleted(true);
+        update(coupon);
         return couponResponse;
     }
 
-    private void toEntity(CouponEntity couponEntity, CouponRequest couponRequest) {
-        couponEntity.setDeleted(false);
-        couponEntity.setTitle(couponRequest.getTitle());
-        couponEntity.setDescription(couponRequest.getDescription());
-        couponEntity.setImageUrl(couponRequest.getImageUrl());
-        couponEntity.setStartDate(couponRequest.getStartDate());
-        couponEntity.setEndDate(couponRequest.getEndDate());
-        couponEntity.setPoint(couponRequest.getPoint());
+    private void toEntity(Coupon coupon, CouponRequest couponRequest) {
+        coupon.setDeleted(false);
+        coupon.setTitle(couponRequest.getTitle());
+        coupon.setDescription(couponRequest.getDescription());
+        coupon.setImageUrl(couponRequest.getImageUrl());
+        coupon.setStartDate(couponRequest.getStartDate());
+        coupon.setEndDate(couponRequest.getEndDate());
+        coupon.setPoint(couponRequest.getPoint());
     }
 
-    private CouponDTO toDto(CouponEntity couponEntity) {
+    private CouponDTO toDto(Coupon coupon) {
         CouponDTO couponDTO = new CouponDTO();
-        couponDTO.setStoreId(couponEntity.getStoreId());
-        couponDTO.setId(couponEntity.getId());
-        couponDTO.setTitle(couponEntity.getTitle());
-        couponDTO.setImageUrl(couponEntity.getImageUrl());
-        couponDTO.setDescription(couponEntity.getDescription());
-        couponDTO.setStartDate(couponEntity.getStartDate());
-        couponDTO.setEndDate(couponEntity.getEndDate());
-        couponDTO.setPoint(couponEntity.getPoint());
+        couponDTO.setStoreId(coupon.getStoreId());
+        couponDTO.setId(coupon.getId());
+        couponDTO.setTitle(coupon.getTitle());
+        couponDTO.setImageUrl(coupon.getImageUrl());
+        couponDTO.setDescription(coupon.getDescription());
+        couponDTO.setStartDate(coupon.getStartDate());
+        couponDTO.setEndDate(coupon.getEndDate());
+        couponDTO.setPoint(coupon.getPoint());
         return couponDTO;
     }
 
 
     public CouponResponse updateStoreIdForCouponAll() {
-        List<CouponEntity> couponEntities = repository.findAllByIsDeletedFalse();
-        for (CouponEntity couponEntity : couponEntities) {
-            if (couponEntity.getStoreId() == null) {
-                couponEntity.setStoreId(ALL_STORE_ID);
+        List<Coupon> couponEntities = repository.findAllByIsDeletedFalse();
+        for (Coupon coupon : couponEntities) {
+            if (coupon.getStoreId() == null) {
+                coupon.setStoreId(ALL_STORE_ID);
             }
         }
         repository.saveAll(couponEntities);
@@ -287,12 +292,13 @@ public class CouponService extends BaseService<CouponEntity, CouponRepository> {
     }
 
     public CouponDTO getCouponById(Long id) {
-        CouponEntity couponEntity = repository.findByIdAndIsDeletedFalse(id);
-        if (couponEntity == null) return null;
-        return toDto(couponEntity);
+        Coupon coupon = repository.findByIdAndIsDeletedFalse(id);
+        if (coupon == null) return null;
+        return toDto(coupon);
     }
 
     public List<CouponDTO> getCouponByIdIn(List<Long> couponIds) {
         return repository.findByIdIn(couponIds).stream().map(this::toDto).collect(Collectors.toList());
     }
 }
+*/

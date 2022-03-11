@@ -15,7 +15,6 @@ import java.util.List;
 @Setter
 public class UserResponse extends BaseResponse {
     private UserDTO user;
-    private LoginResult loginResult;
     private List<UserDTO> users;
     private String accessToken;
 
@@ -32,4 +31,12 @@ public class UserResponse extends BaseResponse {
         setCode(code);
     }
 
+    public UserResponse(UserDTO user) {
+        this.user = user;
+    }
+
+    public UserResponse(List<UserDTO> users, PageDto pageDto) {
+        this.users = users;
+        this.pageDto = pageDto;
+    }
 }

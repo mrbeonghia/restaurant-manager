@@ -1,3 +1,4 @@
+/*
 package com.salon.custom.rest;
 
 import com.salon.base.core.BaseResource;
@@ -111,3 +112,4 @@ public class StoreResource extends BaseResource<StoreService> {
 
 }
 
+*/

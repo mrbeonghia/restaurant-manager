@@ -16,6 +16,7 @@
 			<column name="phone_number" type="varchar(20)" />
 			<column name="password" type="varchar(255)" />
 			<column name="password_encode" type="varchar(255)" />
+
 			<column name="created_time" type="TIMESTAMP" />
 			<column name="updated_time" type="TIMESTAMP" />
 			<column name="created_by_user_id" type="int(11)"/>
@@ -33,9 +34,5 @@
 		<addUniqueConstraint columnNames="user_name" tableName="user_admin"/>
 	</changeSet>
 
-	<changeSet author="NghiaNT" id="add_column_store_id_table_user_admin">
-		<addColumn tableName="user_admin">
-			<column name="store_id" type="int(11)"/>
-		</addColumn>
-	</changeSet>
+
 </databaseChangeLog>

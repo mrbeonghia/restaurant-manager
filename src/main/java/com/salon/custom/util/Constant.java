@@ -57,5 +57,6 @@ public class Constant {
     public static final String LINK_APP_STORE = "https://apps.apple.com/jp/app/%E3%82%82%E3%81%BF%E5%BE%B3-%E5%85%AC%E5%BC%8F-%E5%85%A8%E8%BA%AB%E3%82%82%E3%81%BF%E3%81%BB%E3%81%90%E3%81%97%E3%82%84%E8%B6%B3%E3%81%A4%E3%81%BC-%E3%83%95%E3%83%83%E3%83%88%E3%82%B1%E3%82%A2/id1532379940";
     public static final String LINK_CH_PLAY = "https://play.google.com/store/apps/details?id=com.momitoku.salon";
 
+    public static final String SECRET_KEY = "nghiant";
 
 }

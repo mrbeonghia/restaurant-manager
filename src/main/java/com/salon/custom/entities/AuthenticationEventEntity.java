@@ -23,7 +23,7 @@ public class AuthenticationEventEntity extends BaseEntity {
     @Column(name = "login_time")
     private Date loginTime;
 
-    @Column(name = "data")
+    @Column(name = "data", columnDefinition = "TEXT")
     private String data;
 
     @Column(name = "timeout")

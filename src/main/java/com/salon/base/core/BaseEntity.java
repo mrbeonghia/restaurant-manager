@@ -22,7 +22,11 @@ public abstract class BaseEntity implements Serializable {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     protected Long id;
 
-    protected boolean isDeleted;
+    protected Date createdTime;
+
+    protected Date updatedTime;
+
+    protected boolean deleted;
 
 
 }
