@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class CouponResource extends BaseResource<CouponService> {
 
 
-    @GetMapping("v1/app/getAllCoupon")
+    @GetMapping("getCoupon")
     public ResponseEntity<CouponResponse> getAllCoupon(@RequestParam(name = "page", defaultValue = "1") int page,
                                                        @RequestParam(name = "size", defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page - 1, size);

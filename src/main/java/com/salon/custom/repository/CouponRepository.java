@@ -19,7 +19,7 @@ public interface CouponRepository extends BaseRepository<Coupon> {
             "FROM Coupon ce " +
             "WHERE ce.endDate >= :dateNow AND ce.startDate <= :dateNow " +
             "AND ce.deleted = false ORDER BY ce.id DESC ")
-    Page<Coupon> findAllCouponByDate(@Param("dateNow") Date dateNow, Pageable pageable);
+    List<Coupon> findCouponByDate(@Param("dateNow") Date dateNow);
 
     Page<Coupon> findAllByDeletedFalse(Pageable pageable);
 
