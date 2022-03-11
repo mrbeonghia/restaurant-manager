@@ -12,14 +12,10 @@ import java.util.Date;
 @Setter
 public class CouponDTO {
     private Long id;
-    private Long storeId;
-    private String storeName;
     private String title;
     private String imageUrl;
     private String description;
     private Date startDate;
     private Date endDate;
-    private StoreDTO store;
-    private Long point;
 
 }

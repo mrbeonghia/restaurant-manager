@@ -13,10 +13,11 @@ public class CouponResponse extends BaseResponse {
     private CouponDTO couponDTO;
     private List<CouponDTO> couponDTOList;
     private PageDto pageDto;
-    public CouponResponse() {
-        setSuccess(Boolean.TRUE);
-    }
 
+    public CouponResponse(List<CouponDTO> couponDTOList, PageDto pageDto) {
+        this.couponDTOList = couponDTOList;
+        this.pageDto = pageDto;
+    }
 
     public CouponResponse(String message, int code) {
         super(message, code);

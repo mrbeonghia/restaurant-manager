@@ -7,6 +7,7 @@ import com.salon.custom.dto.staff.StaffRequest;
 import com.salon.custom.dto.staff.StaffResponse;
 import com.salon.custom.dto.staff.StaffSignInDTO;
 import com.salon.custom.dto.user.UserDTO;
+import com.salon.custom.dto.user.UserResponse;
 import com.salon.custom.entities.Staff;
 import com.salon.custom.entities.UserEntity;
 import com.salon.custom.enums.Roles;
@@ -16,6 +17,8 @@ import com.salon.custom.security.CustomUserDetail;
 import com.salon.custom.service.authentication.AuthenticationEventService;
 import com.salon.custom.service.authentication.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -141,4 +144,13 @@ public class StaffService extends BaseService<Staff, StaffRepository> {
         }
         return passwordEncode;
     }
+
+    public StaffResponse getListStaff(String search, Pageable pageable){
+        Page<Staff> staff = repository.searchStaff(search, pageable);
+        List<StaffDTO> staffDTOS = new ArrayList<>();
+        staff.forEach(userEntity -> staffDTOS.add(toDTO(userEntity)));
+        return new StaffResponse(staffDTOS, populatePageDto(staff));
+    }
+
+
 }

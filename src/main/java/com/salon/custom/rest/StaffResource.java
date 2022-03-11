@@ -7,6 +7,8 @@ import com.salon.custom.dto.staff.StaffSignInDTO;
 import com.salon.custom.service.StaffService;
 import com.salon.custom.service.authentication.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,13 +34,11 @@ public class StaffResource extends BaseResource<StaffService> {
     }
 
     @GetMapping("api/getStaff")
-    public ResponseEntity<StaffResponse> getStaffForUserApp(@RequestParam(name = "storeId", required = false) Long storeId,
-                                                            @DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
-                                                            @RequestParam(name = "date") Date date,
-                                                            @RequestParam(name = "time") String time,
-                                                            @RequestParam(name = "packageCareId") Long packageCareId,
-                                                            @RequestParam(name = "orderId", required = false) Long orderId) {
-        StaffResponse staffResponse = service.createStaff(null);
+    public ResponseEntity<StaffResponse> getStaffForUserApp(@RequestParam(value = "search", required = false) String search,
+                                                            @RequestParam(name = "page", defaultValue = "1") int page,
+                                                            @RequestParam(name = "size", defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        StaffResponse staffResponse = service.getListStaff(search, pageable);
         return ResponseEntity.ok().body(staffResponse);
     }
 

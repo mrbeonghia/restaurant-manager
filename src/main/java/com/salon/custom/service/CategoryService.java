@@ -17,4 +17,8 @@ public class CategoryService extends BaseService<Category, CategoryRepository> {
         return new CategoryResponse(categories);
     }
 
+    public  List<Category> findListCategory(){
+        return repository.findByDeletedFalse();
+    }
+
 }

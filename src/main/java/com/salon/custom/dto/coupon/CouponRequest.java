@@ -9,12 +9,10 @@ import java.util.Date;
 @Setter
 public class CouponRequest {
     private Long id;
-    private Long storeId;
     private String title;
     private String imageUrl;
     private String description;
     private Date startDate;
     private Date endDate;
-    private Long point;
 
 }
