@@ -22,13 +22,17 @@ public class TableService extends BaseService<TableEntity, TableRepository> {
         return new TableResponse(tableDTOS, populatePageDto(tableEntities));
     }
 
-    private TableDTO toDTO(TableEntity tableEntity){
+    public TableDTO toDTO(TableEntity tableEntity){
         TableDTO tableDTO = new TableDTO();
         tableDTO.setId(tableEntity.getId());
         tableDTO.setName(tableEntity.getName());
         tableDTO.setSeat(tableEntity.getSeat());
         tableDTO.setAvailable(tableEntity.isAvailable());
         return tableDTO;
+    }
+
+    public List<TableEntity> findListTable(){
+        return repository.findByDeletedFalse();
     }
 
 }
