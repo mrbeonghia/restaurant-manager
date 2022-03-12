@@ -82,7 +82,6 @@ public class StaffService extends BaseService<Staff, StaffRepository> {
             StaffDTO staffDTO = toDTO(staff);
 
 
-
             LoginResult result = new LoginResult();
             result.setRefreshToken(refreshToken);
             result.setAccessToken(accessToken);
@@ -108,6 +107,7 @@ public class StaffService extends BaseService<Staff, StaffRepository> {
         staffDTO.setGender(staff.getGender());
         staffDTO.setRole(staff.getRole().getName());
         staffDTO.setType(staff.getRole().getName());
+
         return staffDTO;
     }
 
@@ -118,11 +118,12 @@ public class StaffService extends BaseService<Staff, StaffRepository> {
         staff.setPhoneNumber(staffRequest.getPhoneNumber());
         staff.setEmail(staffRequest.getEmail());
         staff.setGender(staffRequest.getGender());
+        staff.setRole(staffRequest.getRole());
     }
 
-    public StaffResponse createStaff(StaffRequest staffRequest){
+    public StaffResponse createStaff(StaffRequest staffRequest) {
         Staff staffExist = repository.findByPhoneNumberAndDeletedFalse(staffRequest.getPhoneNumber());
-        if (staffExist != null){
+        if (staffExist != null) {
             return new StaffResponse("This staff exist", 4002);
         }
         Staff staff = new Staff();
@@ -159,8 +160,8 @@ public class StaffService extends BaseService<Staff, StaffRepository> {
         return passwordEncode;
     }
 
-    public StaffResponse getListStaff(String search, Pageable pageable){
-        Page<Staff> staff = repository.searchStaff(search, pageable);
+    public StaffResponse getListStaff(String search, Pageable pageable) {
+        Page<Staff> staff = repository.searchStaff(null, pageable);
         List<StaffDTO> staffDTOS = new ArrayList<>();
         staff.forEach(userEntity -> staffDTOS.add(toDTO(userEntity)));
         return new StaffResponse(staffDTOS, populatePageDto(staff));
