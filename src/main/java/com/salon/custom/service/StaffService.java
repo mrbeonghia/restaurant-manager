@@ -161,7 +161,7 @@ public class StaffService extends BaseService<Staff, StaffRepository> {
     }
 
     public StaffResponse getListStaff(String search, Pageable pageable) {
-        Page<Staff> staff = repository.searchStaff(null, pageable);
+        Page<Staff> staff = repository.findByDeletedFalse(pageable);
         List<StaffDTO> staffDTOS = new ArrayList<>();
         staff.forEach(userEntity -> staffDTOS.add(toDTO(userEntity)));
         return new StaffResponse(staffDTOS, populatePageDto(staff));

@@ -68,7 +68,7 @@ public class UserService extends BaseService<UserEntity, UserRepository> {
     }
 
     public UserResponse getListUser(String search, Pageable pageable){
-        Page<UserEntity> userEntities = repository.searchUser(search, pageable);
+        Page<UserEntity> userEntities = repository.findByDeletedFalse(pageable);
         List<UserDTO> userDTOS = new ArrayList<>();
         userEntities.forEach(userEntity -> userDTOS.add(toDTO(userEntity)));
         return new UserResponse(userDTOS, populatePageDto(userEntities));

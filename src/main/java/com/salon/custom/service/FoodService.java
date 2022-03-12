@@ -24,7 +24,12 @@ public class FoodService extends BaseService<Food, FoodRepository> {
     private CategoryService categoryService;
 
     public FoodResponse getListFood(Long categoryId, Pageable pageable) {
-        Page<Food> foods = repository.findByCategoryId(categoryId, pageable);
+        Page<Food> foods;
+        if (categoryId == null) {
+            foods = repository.findByDeletedFalse(pageable);
+        } else {
+            foods = repository.findByCategoryId(categoryId, pageable);
+        }
         List<FoodDTO> foodDTOS = new ArrayList<>();
         List<Category> categories = categoryService.findListCategory();
         Map<Long, Category> idToCategory = categories.stream()
