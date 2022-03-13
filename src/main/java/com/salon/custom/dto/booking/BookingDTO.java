@@ -14,13 +14,15 @@ import java.util.Set;
 
 @Data
 public class BookingDTO {
-    private List<TableDTO> tableDTOS;
+    private Long id;
+    private List<TableBookingDTO> tableDTOS;
     private Long userId;
     private String customerName;
     private String customerPhone;
     private Integer numberOfCustomers;
     private Date bookingTime;
     private Date arrivalTime;
+    private Date endTime;
     private String status;
     private Long couponId;
     private String couponName;

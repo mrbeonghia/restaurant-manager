@@ -31,6 +31,8 @@ public class Booking extends BaseEntity {
 
     private Date arrivalTime;
 
+    private Date endTime;
+
     private String status;
 
     @ManyToOne(targetEntity = Coupon.class)

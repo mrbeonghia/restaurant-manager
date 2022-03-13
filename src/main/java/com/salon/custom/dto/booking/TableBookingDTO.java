@@ -9,6 +9,7 @@ import java.util.List;
 @Setter
 public class TableBookingDTO {
     private Long id;
+    private Long bookingId;
     private List<BookingDTO> bookingDTOS;
     private String name;
     private Integer seat;

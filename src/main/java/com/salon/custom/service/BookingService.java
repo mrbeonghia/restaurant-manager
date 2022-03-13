@@ -4,6 +4,7 @@ import com.salon.base.core.BaseService;
 import com.salon.custom.dto.booking.BookingDTO;
 import com.salon.custom.dto.booking.BookingResponse;
 import com.salon.custom.dto.booking.TableBookingDTO;
+import com.salon.custom.dto.order.OrderDTO;
 import com.salon.custom.dto.table.TableDTO;
 import com.salon.custom.entities.Booking;
 import com.salon.custom.entities.TableEntity;
@@ -30,7 +31,7 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
     @Autowired
     private OrderService orderService;
 
-    public BookingResponse getListBooking(String day, Pageable pageable) {
+    /*public BookingResponse getListBooking(String day, Pageable pageable) {
         Date date = DateUtils.convertStringToDateJapan(day);
         Date startTime = DateUtils.getStartTimeOfDay(date);
         Date endTime = DateUtils.getEndTimeOfDay(date);
@@ -59,7 +60,7 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
             bookingDTOS.add(bookingDTO);
         });
         return new BookingResponse(bookingDTOS, populatePageDto(bookings));
-    }
+    }*/
 
 
     public BookingResponse getListTableBooking(String day) {
@@ -67,7 +68,6 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
         Date startTime = DateUtils.getStartTimeOfDay(date);
         Date endTime = DateUtils.getEndTimeOfDay(date);
         List<Booking> bookings = repository.findByDeletedFalse(startTime, endTime);
-
 
         Set<Long> bookingIds = bookings.stream().map(Booking::getId).collect(Collectors.toSet());
         List<TableOfBooking> tableOfBookingAll = tableOfBookingService.getByBookingIds(bookingIds);
@@ -111,9 +111,11 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
             bookingDTO.setCustomerName(booking.getUserEntity().getName());
             bookingDTO.setCustomerPhone(booking.getUserEntity().getPhoneNumber());
         }
+        bookingDTO.setId(booking.getId());
         bookingDTO.setNumberOfCustomers(booking.getNumberOfCustomers());
         bookingDTO.setBookingTime(booking.getBookingTime());
         bookingDTO.setArrivalTime(booking.getArrivalTime());
+        bookingDTO.setEndTime(booking.getEndTime());
         bookingDTO.setStatus(booking.getStatus());
 
         return bookingDTO;
@@ -126,6 +128,37 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
         bookingDTO.setOrderDTOS(orderService.getListOrderByBookingId(bookingId));
         response.setBookingDTO(bookingDTO);
         return response;
+    }
+
+    public BookingResponse getHistoryBooking(String startDate, String endDate, Pageable pageable){
+        Date startTime = DateUtils.getStartTimeOfDay(DateUtils.convertStringToDateJapan(startDate));
+        Date endTime = DateUtils.getEndTimeOfDay(DateUtils.convertStringToDateJapan(endDate));
+        Page<Booking> bookings = repository.findByDeletedFalse(startTime, endTime, pageable);
+        Set<Long> bookingIds = bookings.stream().map(Booking::getId).collect(Collectors.toSet());
+        List<TableOfBooking> tableOfBookingAll = tableOfBookingService.getByBookingIds(bookingIds);
+        Map<Long, List<TableOfBooking>> bookingIdToTables = new HashMap<>();
+        for (TableOfBooking tableOfBooking : tableOfBookingAll) {
+            List<TableOfBooking> listInMap = bookingIdToTables
+                    .getOrDefault(tableOfBooking.getTableEntity().getId(), new ArrayList<>());
+            listInMap.add(tableOfBooking);
+            bookingIdToTables.put(tableOfBooking.getTableEntity().getId(), listInMap);
+        }
+        List<OrderDTO> orderDTOSAll = orderService.getByBookingIds(bookingIds);
+        Map<Long, List<OrderDTO>> bookingIdToOrderDTOS = orderDTOSAll
+                .stream().collect(Collectors.groupingBy(OrderDTO::getBookingId));
+        List<BookingDTO> bookingDTOS = new ArrayList<>();
+        for (Booking booking : bookings) {
+            BookingDTO bookingDTO = toDTO(booking);
+            List<TableOfBooking> tables = bookingIdToTables.get(booking.getId());
+            List<TableBookingDTO> tableBookingDTOS = new ArrayList<>();
+            if (tables != null){
+                bookingDTO.setTableDTOS(tableOfBookingService.toDTOS(tables));
+            }
+            bookingDTO.setOrderDTOS(bookingIdToOrderDTOS.get(booking.getId()));
+            bookingDTOS.add(bookingDTO);
+        }
+        return new BookingResponse(bookingDTOS, populatePageDto(bookings));
+
     }
 
 

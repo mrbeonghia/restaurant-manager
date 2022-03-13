@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class OrderService extends BaseService<Order, OrderRepository> {
@@ -29,6 +30,13 @@ public class OrderService extends BaseService<Order, OrderRepository> {
         orderDTO.setOrderTime(order.getOrderTime());
         orderDTO.setStatus(order.getStatus());
         return orderDTO;
+    }
+
+    public List<OrderDTO> getByBookingIds(Set<Long> bookingIds){
+        List<Order> orders = repository.findByBookingIdInAndDeletedFalse(bookingIds);
+        List<OrderDTO> orderDTOS = new ArrayList<>();
+        orders.forEach(order -> orderDTOS.add(toDTO(order)));
+        return orderDTOS;
     }
 
 }
