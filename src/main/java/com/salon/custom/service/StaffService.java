@@ -6,11 +6,8 @@ import com.salon.custom.dto.staff.StaffDTO;
 import com.salon.custom.dto.staff.StaffRequest;
 import com.salon.custom.dto.staff.StaffResponse;
 import com.salon.custom.dto.staff.StaffSignInDTO;
-import com.salon.custom.dto.user.UserDTO;
-import com.salon.custom.dto.user.UserResponse;
 import com.salon.custom.entities.RoleEntity;
 import com.salon.custom.entities.Staff;
-import com.salon.custom.entities.UserEntity;
 import com.salon.custom.enums.Roles;
 import com.salon.custom.exception.InvalidRefreshTokenException;
 import com.salon.custom.repository.StaffRepository;
@@ -161,7 +158,7 @@ public class StaffService extends BaseService<Staff, StaffRepository> {
     }
 
     public StaffResponse getListStaff(String search, Pageable pageable) {
-        Page<Staff> staff = repository.findByDeletedFalse(pageable);
+        Page<Staff> staff = repository.findByDeletedFalseOrderById(pageable);
         List<StaffDTO> staffDTOS = new ArrayList<>();
         staff.forEach(userEntity -> staffDTOS.add(toDTO(userEntity)));
         return new StaffResponse(staffDTOS, populatePageDto(staff));

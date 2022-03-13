@@ -4,10 +4,8 @@ import com.salon.base.core.BaseService;
 import com.salon.custom.dto.booking.BookingDTO;
 import com.salon.custom.dto.booking.BookingResponse;
 import com.salon.custom.dto.booking.TableBookingDTO;
-import com.salon.custom.dto.order.OrderDTO;
 import com.salon.custom.dto.table.TableDTO;
 import com.salon.custom.entities.Booking;
-import com.salon.custom.entities.Order;
 import com.salon.custom.entities.TableEntity;
 import com.salon.custom.entities.TableOfBooking;
 import com.salon.custom.repository.BookingRepository;
@@ -123,7 +121,7 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
 
     public BookingResponse getBookingDetail(Long bookingId){
         BookingResponse response = new BookingResponse();
-        Booking booking = repository.findByIdAndDeletedFalse(bookingId);
+        Booking booking = repository.findByIdAndDeletedFalseOrderById(bookingId);
         BookingDTO bookingDTO = toDTO(booking);
         bookingDTO.setOrderDTOS(orderService.getListOrderByBookingId(bookingId));
         response.setBookingDTO(bookingDTO);

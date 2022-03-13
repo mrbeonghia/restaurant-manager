@@ -26,7 +26,7 @@ public class FoodService extends BaseService<Food, FoodRepository> {
     public FoodResponse getListFood(Long categoryId, Pageable pageable) {
         Page<Food> foods;
         if (categoryId == null) {
-            foods = repository.findByDeletedFalse(pageable);
+            foods = repository.findByDeletedFalseOrderById(pageable);
         } else {
             foods = repository.findByCategoryId(categoryId, pageable);
         }

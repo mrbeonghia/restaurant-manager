@@ -22,5 +22,5 @@ public interface BookingRepository extends BaseRepository<Booking> {
             "AND b.deleted = false ")
     List<Booking> findByDeletedFalse(Date startTIme, Date endTime);
 
-    Booking findByIdAndDeletedFalse(Long id);
+    Booking findByIdAndDeletedFalseOrderById(Long id);
 }
