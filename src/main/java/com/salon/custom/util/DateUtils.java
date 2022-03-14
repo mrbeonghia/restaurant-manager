@@ -71,7 +71,7 @@ public class DateUtils {
 
     public static Date convertStringToDate(String date) {
         try {
-            Date dateNew = new SimpleDateFormat("yyyy/MM/dd").parse(date);
+            Date dateNew = new SimpleDateFormat("dd/MM/yyyy").parse(date);
             return getStartTimeOfDay(dateNew);
         } catch (ParseException e) {
             return null;

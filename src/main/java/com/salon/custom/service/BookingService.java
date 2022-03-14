@@ -131,8 +131,8 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
     }
 
     public BookingResponse getHistoryBooking(String startDate, String endDate, Pageable pageable){
-        Date startTime = DateUtils.getStartTimeOfDay(DateUtils.convertStringToDateJapan(startDate));
-        Date endTime = DateUtils.getEndTimeOfDay(DateUtils.convertStringToDateJapan(endDate));
+        Date startTime = DateUtils.getStartTimeOfDay(DateUtils.convertStringToDate(startDate));
+        Date endTime = DateUtils.getEndTimeOfDay(DateUtils.convertStringToDate(endDate));
         Page<Booking> bookings = repository.findByDeletedFalse(startTime, endTime, pageable);
         Set<Long> bookingIds = bookings.stream().map(Booking::getId).collect(Collectors.toSet());
         List<TableOfBooking> tableOfBookingAll = tableOfBookingService.getByBookingIds(bookingIds);
