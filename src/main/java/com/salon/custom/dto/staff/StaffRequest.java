@@ -16,6 +16,6 @@ public class StaffRequest {
     private String email;
     private String password;
     private Boolean isActive;
-    private RoleEntity role;
+    private String role;
 
 }
