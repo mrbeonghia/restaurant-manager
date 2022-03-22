@@ -13,9 +13,12 @@ public interface FoodRepository extends BaseRepository<Food> {
 
     Food findByIdAndDeletedFalse(Long staffId);
 
-    @Query(value = "SELECT f FROM Food f WHERE ?1 is null OR f.category.id = ?1 " +
-            "AND f.deleted = false ")
+    @Query(value = "SELECT f FROM Food f WHERE f.category.id = (?1) " +
+            "AND f.deleted = false ORDER BY f.id")
     Page<Food> findByCategoryId(Long categoryId, Pageable pageable);
 
+    Page<Food> findByDeletedFalseOrderById(Pageable pageable);
+
+    Food findByNameAndDeletedFalse(String name);
 
 }

@@ -30,5 +30,7 @@ public class Coupon extends BaseEntity {
     @Column(name = "end_date")
     private Date endDate;
 
+    @Column(name = "discount")
+    private Long discount;
 
 }

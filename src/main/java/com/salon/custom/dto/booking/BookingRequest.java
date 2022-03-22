@@ -1,21 +1,19 @@
 package com.salon.custom.dto.booking;
 
 import com.salon.custom.dto.order.OrderDTO;
-import com.salon.custom.dto.table.TableDTO;
-import com.salon.custom.entities.Coupon;
-import com.salon.custom.entities.TableEntity;
-import com.salon.custom.entities.UserEntity;
-import lombok.Data;
+import com.salon.custom.dto.order.OrderRequest;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.ManyToOne;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-@Data
-public class BookingDTO {
+@Getter
+@Setter
+public class BookingRequest {
     private Long id;
-    private List<TableBookingDTO> tableDTOS;
+    private Set<Long> tableIds;
     private Long userId;
     private String customerName;
     private String customerPhone;
@@ -25,6 +23,5 @@ public class BookingDTO {
     private Date endTime;
     private String status;
     private Long couponId;
-    private String couponName;
-    private List<OrderDTO> orderDTOS;
+    private List<OrderRequest> orderRequests;
 }

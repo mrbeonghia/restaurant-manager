@@ -22,4 +22,8 @@ public class FoodResponse extends BaseResponse {
         this.foodDTOS = foodDTOS;
         this.pageDto = pageDto;
     }
+
+    public FoodResponse(FoodDTO foodDTO) {
+        this.foodDTO = foodDTO;
+    }
 }

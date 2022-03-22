@@ -2,6 +2,7 @@ package com.salon.custom.service;
 
 import com.salon.base.core.BaseService;
 import com.salon.custom.dto.coupon.CouponDTO;
+import com.salon.custom.dto.coupon.CouponRequest;
 import com.salon.custom.dto.coupon.CouponResponse;
 import com.salon.custom.entities.Coupon;
 import com.salon.custom.repository.CouponRepository;
@@ -22,6 +23,35 @@ public class CouponService extends BaseService<Coupon, CouponRepository> {
         return new CouponResponse(couponDTOS, populatePageDto(coupons));
     }
 
+    public CouponResponse createCoupon(CouponRequest request){
+        Coupon coupon = new Coupon();
+        toEntity(request, coupon);
+        return new CouponResponse(toDTO(coupon));
+    }
+
+    public CouponResponse updateCoupon(CouponRequest request){
+        Coupon coupon = repository.findByIdAndDeletedFalse(request.getId());
+        if (coupon == null){
+            return new CouponResponse("This coupon not found", 4004);
+        }
+        if (request.getEndDate().before(request.getStartDate())){
+            return new CouponResponse("Start date must before end date", 4004);
+        }
+        toEntity(request, coupon);
+        update(coupon);
+        return new CouponResponse(toDTO(coupon));
+    }
+
+    public CouponResponse deleteCoupon(Long id){
+        Coupon coupon = repository.findByIdAndDeletedFalse(id);
+        if (coupon == null){
+            return new CouponResponse("This coupon not found", 4004);
+        }
+        coupon.setDeleted(true);
+        update(coupon);
+        return new CouponResponse(toDTO(coupon));
+    }
+
     private CouponDTO toDTO(Coupon coupon){
         CouponDTO couponDTO = new CouponDTO();
         couponDTO.setId(coupon.getId());
@@ -31,5 +61,13 @@ public class CouponService extends BaseService<Coupon, CouponRepository> {
         couponDTO.setStartDate(coupon.getStartDate());
         couponDTO.setEndDate(coupon.getEndDate());
         return couponDTO;
+    }
+
+    private void toEntity(CouponRequest request, Coupon coupon){
+        coupon.setTitle(request.getTitle());
+        coupon.setDescription(request.getDescription());
+        coupon.setStartDate(request.getStartDate());
+        coupon.setEndDate(request.getEndDate());
+        coupon.setDiscount(request.getDiscount());
     }
 }

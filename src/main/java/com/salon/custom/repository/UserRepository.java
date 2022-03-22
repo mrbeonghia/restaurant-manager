@@ -33,6 +33,6 @@ UserRepository extends BaseRepository<UserEntity> {
             "AND u.deleted = false ")
     Page<UserEntity> searchUser(@Param("search") String search, Pageable pageable);
 
-    Page<UserEntity> findByDeletedFalse(Pageable pageable);
+    Page<UserEntity> findByDeletedFalseOrderById(Pageable pageable);
 
 }

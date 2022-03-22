@@ -6,11 +6,8 @@ import com.salon.custom.dto.staff.StaffDTO;
 import com.salon.custom.dto.staff.StaffRequest;
 import com.salon.custom.dto.staff.StaffResponse;
 import com.salon.custom.dto.staff.StaffSignInDTO;
-import com.salon.custom.dto.user.UserDTO;
-import com.salon.custom.dto.user.UserResponse;
 import com.salon.custom.entities.RoleEntity;
 import com.salon.custom.entities.Staff;
-import com.salon.custom.entities.UserEntity;
 import com.salon.custom.enums.Roles;
 import com.salon.custom.exception.InvalidRefreshTokenException;
 import com.salon.custom.repository.StaffRepository;
@@ -82,7 +79,6 @@ public class StaffService extends BaseService<Staff, StaffRepository> {
             StaffDTO staffDTO = toDTO(staff);
 
 
-
             LoginResult result = new LoginResult();
             result.setRefreshToken(refreshToken);
             result.setAccessToken(accessToken);
@@ -108,6 +104,7 @@ public class StaffService extends BaseService<Staff, StaffRepository> {
         staffDTO.setGender(staff.getGender());
         staffDTO.setRole(staff.getRole().getName());
         staffDTO.setType(staff.getRole().getName());
+
         return staffDTO;
     }
 
@@ -118,11 +115,12 @@ public class StaffService extends BaseService<Staff, StaffRepository> {
         staff.setPhoneNumber(staffRequest.getPhoneNumber());
         staff.setEmail(staffRequest.getEmail());
         staff.setGender(staffRequest.getGender());
+        staff.setRole(staffRequest.getRole());
     }
 
-    public StaffResponse createStaff(StaffRequest staffRequest){
+    public StaffResponse createStaff(StaffRequest staffRequest) {
         Staff staffExist = repository.findByPhoneNumberAndDeletedFalse(staffRequest.getPhoneNumber());
-        if (staffExist != null){
+        if (staffExist != null) {
             return new StaffResponse("This staff exist", 4002);
         }
         Staff staff = new Staff();
@@ -133,6 +131,28 @@ public class StaffService extends BaseService<Staff, StaffRepository> {
         save(staff);
         return new StaffResponse(toDTO(staff));
 
+    }
+
+    public StaffResponse updateStaff(StaffRequest staffRequest) {
+        Staff staff = repository.findByIdAndDeletedFalse(staffRequest.getId());
+        if (staff == null) {
+            return new StaffResponse("This staff not found", 4004);
+        }
+        toEntity(staffRequest, staff);
+        staff.setPassword(passwordEncoder.encode(setPasswordDefault(staff.getPhoneNumber())));
+        staff.setPasswordEncode(encodePasswordCleaner(setPasswordDefault(staff.getPhoneNumber())));
+        update(staff);
+        return new StaffResponse(toDTO(staff));
+    }
+
+    public StaffResponse deleteStaff(Long id) {
+        Staff staff = repository.findByIdAndDeletedFalse(id);
+        if (staff == null) {
+            return new StaffResponse("This staff not found", 4004);
+        }
+        staff.setDeleted(true);
+        update(staff);
+        return new StaffResponse(toDTO(staff));
     }
 
 
@@ -160,8 +180,8 @@ public class StaffService extends BaseService<Staff, StaffRepository> {
         return passwordEncode;
     }
 
-    public StaffResponse getListStaff(String search, Pageable pageable){
-        Page<Staff> staff = repository.searchStaff(search, pageable);
+    public StaffResponse getListStaff(String search, Pageable pageable) {
+        Page<Staff> staff = repository.findByDeletedFalseOrderById(pageable);
         List<StaffDTO> staffDTOS = new ArrayList<>();
         staff.forEach(userEntity -> staffDTOS.add(toDTO(userEntity)));
         return new StaffResponse(staffDTOS, populatePageDto(staff));
