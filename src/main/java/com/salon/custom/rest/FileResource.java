@@ -15,7 +15,7 @@ public class FileResource {
     @Autowired
     FileService fileService;
 
-    @PostMapping("v1/admin/uploadFile")
+    @PostMapping("api/uploadFile")
     public ResponseEntity<FileDTO> uploadFile(@RequestParam(name = "file") MultipartFile file) {
         FileDTO fileDTO = fileService.uploadFile(file, "image", "image");
         return ResponseEntity.ok().body(fileDTO);

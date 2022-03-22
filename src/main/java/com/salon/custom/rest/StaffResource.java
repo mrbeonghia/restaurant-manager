@@ -21,7 +21,7 @@ public class StaffResource extends BaseResource<StaffService> {
     @Autowired
     AuthenticationService authenticationService;
 
-    @PostMapping("createStaff")
+    @PostMapping("api/createStaff")
     public ResponseEntity<StaffResponse> createStaffBySystemAdmin(@RequestBody StaffRequest request) {
         StaffResponse staffResponse = service.createStaff(request);
         return ResponseEntity.ok().body(staffResponse);

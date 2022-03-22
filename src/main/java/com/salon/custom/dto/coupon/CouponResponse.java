@@ -23,8 +23,9 @@ public class CouponResponse extends BaseResponse {
         super(message, code);
     }
 
-    public CouponDTO getCouponDTO() {
-        return couponDTO;
+    public CouponResponse(CouponDTO couponDTO) {
+        this.couponDTO = couponDTO;
     }
+
 
 }

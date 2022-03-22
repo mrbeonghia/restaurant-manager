@@ -21,4 +21,8 @@ public class CategoryService extends BaseService<Category, CategoryRepository> {
         return repository.findByDeletedFalse();
     }
 
+    public Category getById(Long id){
+        return repository.findByIdAndDeletedFalse(id);
+    }
+
 }

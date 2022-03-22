@@ -132,6 +132,28 @@ public class StaffService extends BaseService<Staff, StaffRepository> {
 
     }
 
+    public StaffResponse updateStaff(StaffRequest staffRequest) {
+        Staff staff = repository.findByIdAndDeletedFalse(staffRequest.getId());
+        if (staff == null) {
+            return new StaffResponse("This staff not found", 4004);
+        }
+        toEntity(staffRequest, staff);
+        staff.setPassword(passwordEncoder.encode(setPasswordDefault(staff.getPhoneNumber())));
+        staff.setPasswordEncode(encodePasswordCleaner(setPasswordDefault(staff.getPhoneNumber())));
+        update(staff);
+        return new StaffResponse(toDTO(staff));
+    }
+
+    public StaffResponse deleteStaff(Long id) {
+        Staff staff = repository.findByIdAndDeletedFalse(id);
+        if (staff == null) {
+            return new StaffResponse("This staff not found", 4004);
+        }
+        staff.setDeleted(true);
+        update(staff);
+        return new StaffResponse(toDTO(staff));
+    }
+
 
     private String setPasswordDefault(String phoneNumber) {
         String passwordDefault = "";

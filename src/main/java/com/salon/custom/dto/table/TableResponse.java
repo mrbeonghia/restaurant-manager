@@ -22,4 +22,8 @@ public class TableResponse extends BaseResponse {
     public TableResponse(String message, int code) {
         super(message, code);
     }
+
+    public TableResponse(TableDTO tableDTO) {
+        this.tableDTO = tableDTO;
+    }
 }

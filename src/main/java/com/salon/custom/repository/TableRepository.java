@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface TableRepository extends BaseRepository<TableEntity> {
@@ -14,5 +15,11 @@ public interface TableRepository extends BaseRepository<TableEntity> {
     Page<TableEntity> findByDeletedFalse(Pageable page);
 
     List<TableEntity> findByDeletedFalse();
+
+    TableEntity findByIdAndDeletedFalse(Long id);
+
+    TableEntity findByNameAndDeletedFalse(String name);
+
+    List<TableEntity> findByIdInAndDeletedFalse(Set<Long> ids);
 
 }

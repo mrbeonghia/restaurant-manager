@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class CouponResource extends BaseResource<CouponService> {
 
 
-    @GetMapping("getCoupon")
+    @GetMapping("api/getCoupon")
     public ResponseEntity<CouponResponse> getAllCoupon(@RequestParam(name = "page", defaultValue = "1") int page,
                                                        @RequestParam(name = "size", defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
@@ -23,5 +23,19 @@ public class CouponResource extends BaseResource<CouponService> {
         return ResponseEntity.ok().body(couponResponse);
     }
 
+    @PostMapping("api/createCoupon")
+    public ResponseEntity<CouponResponse> createCoupon(@RequestBody CouponRequest couponRequest) {
+        return ResponseEntity.ok().body(service.createCoupon(couponRequest));
+    }
+
+    @PutMapping("api/updateCoupon")
+    public ResponseEntity<CouponResponse> updateCoupon(@RequestBody CouponRequest couponRequest) {
+        return ResponseEntity.ok().body(service.updateCoupon(couponRequest));
+    }
+
+    @DeleteMapping("api/deleteCoupon")
+    public ResponseEntity<CouponResponse> deleteCoupon(@RequestParam(name = "id") Long id) {
+        return ResponseEntity.ok().body(service.deleteCoupon(id));
+    }
 
 }

@@ -2,6 +2,7 @@ package com.salon.custom.service;
 
 import com.salon.base.core.BaseService;
 import com.salon.custom.dto.booking.BookingDTO;
+import com.salon.custom.dto.booking.BookingRequest;
 import com.salon.custom.dto.booking.BookingResponse;
 import com.salon.custom.dto.booking.TableBookingDTO;
 import com.salon.custom.dto.order.OrderDTO;
@@ -159,6 +160,16 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
         }
         return new BookingResponse(bookingDTOS, populatePageDto(bookings));
 
+    }
+
+    public BookingResponse createBooking(BookingRequest request){
+        Set<Long> tableIds = request.getTableIds();
+        List<TableEntity> tableAvailable = tableService.getByIds(request.getTableIds());
+        Set<Long> tableAvailableIds = tableAvailable.stream().map(TableEntity::getId).collect(Collectors.toSet());
+        if (!tableIds.equals(tableAvailableIds)){
+            return new BookingResponse("Some tables are already booked", 4005);
+        }
+        return new BookingResponse();
     }
 
 
