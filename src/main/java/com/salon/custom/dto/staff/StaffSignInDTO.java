@@ -9,5 +9,4 @@ public class StaffSignInDTO {
     private String phone;
     private String password;
 
-
 }
