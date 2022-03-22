@@ -14,4 +14,8 @@ public class RoleService extends BaseService<RoleEntity, RoleRepository> {
         return repository.findByDeletedFalse();
     }
 
+    public RoleEntity getRoleByName(String name){
+        return repository.findByNameAndDeletedFalse(name);
+    }
+
 }

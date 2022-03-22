@@ -129,6 +129,7 @@ public class StaffService extends BaseService<Staff, StaffRepository> {
         toEntity(staffRequest, staff);
         staff.setPassword(passwordEncoder.encode(setPasswordDefault(staff.getPhoneNumber())));
         staff.setPasswordEncode(encodePasswordCleaner(setPasswordDefault(staff.getPhoneNumber())));
+        staff.setRole(roleService.getRoleByName(staffRequest.getRole()));
         save(staff);
         return new StaffResponse(toDTO(staff));
 

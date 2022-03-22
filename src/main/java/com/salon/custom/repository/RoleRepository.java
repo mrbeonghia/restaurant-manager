@@ -11,4 +11,6 @@ public interface RoleRepository extends BaseRepository<RoleEntity> {
 
     List<RoleEntity> findByDeletedFalse();
 
+    RoleEntity findByNameAndDeletedFalse(String name);
+
 }
