@@ -240,13 +240,13 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
     }
 
     public BookingResponse updateBooking(BookingRequest request) {
-        Set<Long> tableIds = request.getTableIds();
+        /*Set<Long> tableIds = request.getTableIds();
         List<TableEntity> tableAvailable = tableService.getTablesAvailable();
         List<TableEntity> tableBookings = tableService.getByIds(request.getTableIds());
         Set<Long> tableAvailableIds = tableAvailable.stream().map(TableEntity::getId).collect(Collectors.toSet());
         if (!tableAvailableIds.containsAll(tableIds)) {
             return new BookingResponse("Some tables are already booked", 4005);
-        }
+        }*/
         Booking booking = repository.findByIdAndDeletedFalse(request.getId());
         if (booking == null) {
             return new BookingResponse("This booking not found", 4005);
