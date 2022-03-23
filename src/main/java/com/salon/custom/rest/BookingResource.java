@@ -3,11 +3,9 @@ package com.salon.custom.rest;
 import com.salon.base.core.BaseResource;
 import com.salon.custom.dto.booking.BookingRequest;
 import com.salon.custom.dto.booking.BookingResponse;
-import com.salon.custom.dto.categoty.CategoryResponse;
 import com.salon.custom.service.BookingService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

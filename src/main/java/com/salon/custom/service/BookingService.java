@@ -257,7 +257,7 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
         booking.setEndTime(DateUtils.getEndTimeBooking(booking.getBookingTime()));
         booking.setStatus(request.getStatus());
         save(booking);
-        List<TableOfBooking> tableOfBookings = new ArrayList<>();
+        /*List<TableOfBooking> tableOfBookings = new ArrayList<>();
         List<TableEntity> tables = new ArrayList<>();
         List<TableOfBooking> tableOfBookingsOld = tableOfBookingService
                 .getByBookingId(booking.getId(), tableIds);
@@ -275,7 +275,7 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
             tableOfBookings.add(tableOfBooking);
         }
         tableService.saveAll(tables);
-        tableOfBookingService.saveAll(tableOfBookings);
+        tableOfBookingService.saveAll(tableOfBookings);*/
 
         List<OrderRequest> orderRequests = request.getOrderRequests();
         List<Order> orders = new ArrayList<>();
