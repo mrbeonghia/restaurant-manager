@@ -2,7 +2,6 @@ package com.salon.custom.repository;
 
 import com.salon.base.core.BaseRepository;
 import com.salon.custom.entities.TableEntity;
-import javafx.scene.control.Tab;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
