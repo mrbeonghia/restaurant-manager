@@ -37,7 +37,7 @@ public class TableService extends BaseService<TableEntity, TableRepository> {
             return new TableResponse("This table not found", 4004);
         }
         TableEntity tableExist = repository.findByNameAndDeletedFalse(request.getName());
-        if (tableEntity != null){
+        if (tableExist != null){
             return new TableResponse("This table exist", 4004);
         }
         toEntity(request, tableEntity);
@@ -84,6 +84,13 @@ public class TableService extends BaseService<TableEntity, TableRepository> {
 
     public List<TableEntity> getTablesAvailable(){
         return repository.findTablesAvailable();
+    }
+
+    public TableResponse getListTableAvailable(){
+        List<TableEntity> tableEntities = repository.findTablesAvailable();
+        List<TableDTO> tableDTOS = new ArrayList<>();
+        tableEntities.forEach(tableEntity -> tableDTOS.add(toDTO(tableEntity)));
+        return new TableResponse(tableDTOS);
     }
 
 }

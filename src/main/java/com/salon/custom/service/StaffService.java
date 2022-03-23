@@ -2,10 +2,7 @@ package com.salon.custom.service;
 
 import com.salon.base.core.BaseService;
 import com.salon.custom.dto.LoginResult;
-import com.salon.custom.dto.staff.StaffDTO;
-import com.salon.custom.dto.staff.StaffRequest;
-import com.salon.custom.dto.staff.StaffResponse;
-import com.salon.custom.dto.staff.StaffSignInDTO;
+import com.salon.custom.dto.staff.*;
 import com.salon.custom.entities.RoleEntity;
 import com.salon.custom.entities.Staff;
 import com.salon.custom.enums.Roles;
@@ -184,6 +181,24 @@ public class StaffService extends BaseService<Staff, StaffRepository> {
         List<StaffDTO> staffDTOS = new ArrayList<>();
         staff.forEach(userEntity -> staffDTOS.add(toDTO(userEntity)));
         return new StaffResponse(staffDTOS, populatePageDto(staff));
+    }
+
+    public boolean matchPassword(String oldPassword, String password) {
+        return passwordEncoder.matches(oldPassword, password);
+    }
+
+    public StaffResponse changePassword(ChangePassword changePassword){
+        Staff staff = repository.findByIdAndDeletedFalse(getCurrentUser().getStaffEntity().getId());;
+        if (staff == null) {
+            return new StaffResponse("This staff not found", 4004);
+        }
+        if (!matchPassword(changePassword.getOldPassword(), staff.getPassword())){
+            return new StaffResponse("Old password incorrect", 4003);
+        }
+        String encryptedPassword = passwordEncoder.encode(changePassword.getNewPassword());
+        staff.setPassword(encryptedPassword);
+        update(staff);
+        return new StaffResponse();
     }
 
 

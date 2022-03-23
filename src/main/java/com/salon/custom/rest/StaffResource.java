@@ -1,6 +1,7 @@
 package com.salon.custom.rest;
 
 import com.salon.base.core.BaseResource;
+import com.salon.custom.dto.staff.ChangePassword;
 import com.salon.custom.dto.staff.StaffRequest;
 import com.salon.custom.dto.staff.StaffResponse;
 import com.salon.custom.dto.staff.StaffSignInDTO;
@@ -45,6 +46,12 @@ public class StaffResource extends BaseResource<StaffService> {
     @PostMapping("staffLogIn")
     public ResponseEntity<StaffResponse> staffLogIn(@RequestBody StaffSignInDTO request) {
         StaffResponse staffResponse = service.staffLogIn(request);
+        return ResponseEntity.ok().body(staffResponse);
+    }
+
+    @PostMapping("api/changePassword")
+    public ResponseEntity<StaffResponse> staffChangePassword(@RequestBody ChangePassword request) {
+        StaffResponse staffResponse = service.changePassword(request);
         return ResponseEntity.ok().body(staffResponse);
     }
 

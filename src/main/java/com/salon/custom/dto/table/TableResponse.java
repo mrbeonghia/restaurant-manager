@@ -26,4 +26,8 @@ public class TableResponse extends BaseResponse {
     public TableResponse(TableDTO tableDTO) {
         this.tableDTO = tableDTO;
     }
+
+    public TableResponse(List<TableDTO> tableDTOS) {
+        this.tableDTOS = tableDTOS;
+    }
 }

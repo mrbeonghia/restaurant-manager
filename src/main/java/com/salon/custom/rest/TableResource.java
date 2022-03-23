@@ -38,4 +38,9 @@ public class TableResource extends BaseResource<TableService> {
         return ResponseEntity.ok().body(service.deleteTable(id));
     }
 
+    @GetMapping("api/getTableAvailable")
+    public ResponseEntity<TableResponse> getListTableAvailable() {
+        return ResponseEntity.ok().body(service.getListTableAvailable());
+    }
+
 }

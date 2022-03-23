@@ -255,7 +255,7 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
             order.setFood(foodService.getFoodById(orderRequest.getFoodId()));
             order.setBooking(booking);
             order.setQuantity(orderRequest.getQuantity());
-            order.setStatus(StatusBooking.ORDER.getStatus());
+            order.setStatus(orderRequest.getStatus());
             orders.add(order);
         });
         orderService.saveAll(orders);
