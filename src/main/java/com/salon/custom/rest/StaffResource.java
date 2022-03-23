@@ -29,7 +29,7 @@ public class StaffResource extends BaseResource<StaffService> {
 
     @PutMapping("api/updateStaff")
     public ResponseEntity<StaffResponse> updateStaffByAdmin(@RequestBody StaffRequest request) {
-        StaffResponse staffResponse = service.createStaff(request);
+        StaffResponse staffResponse = service.updateStaff(request);
         return ResponseEntity.ok().body(staffResponse);
     }
 

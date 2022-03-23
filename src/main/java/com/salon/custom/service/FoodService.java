@@ -97,4 +97,8 @@ public class FoodService extends BaseService<Food, FoodRepository> {
         food.setDescription(request.getDescription());
         food.setCategory(categoryService.getById(request.getCategoryId()));
     }
+
+    public Food getFoodById(Long id){
+        return repository.findByIdAndDeletedFalse(id);
+    }
 }

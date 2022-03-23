@@ -1,4 +1,4 @@
-package com.salon.custom.rest.booking;
+package com.salon.custom.rest;
 
 import com.salon.base.core.BaseResource;
 import com.salon.custom.dto.booking.BookingRequest;

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FoodRepository extends BaseRepository<Food> {
 
-    Food findByIdAndDeletedFalse(Long staffId);
+    Food findByIdAndDeletedFalse(Long id);
 
     @Query(value = "SELECT f FROM Food f WHERE f.category.id = (?1) " +
             "AND f.deleted = false ORDER BY f.id")

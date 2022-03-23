@@ -45,5 +45,9 @@ public class OrderService extends BaseService<Order, OrderRepository> {
         return orderDTOS;
     }
 
+    public void saveAll(List<Order> orders){
+        repository.saveAll(orders);
+    }
+
 
 }

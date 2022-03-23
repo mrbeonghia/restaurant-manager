@@ -5,6 +5,7 @@ import com.salon.custom.dto.booking.BookingDTO;
 import com.salon.custom.dto.booking.BookingRequest;
 import com.salon.custom.dto.booking.BookingResponse;
 import com.salon.custom.dto.booking.TableBookingDTO;
+import com.salon.custom.dto.food.FoodRequest;
 import com.salon.custom.dto.order.OrderDTO;
 import com.salon.custom.dto.order.OrderRequest;
 import com.salon.custom.entities.*;
@@ -33,6 +34,9 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FoodService foodService;
 
     /*public BookingResponse getListBooking(String day, Pageable pageable) {
         Date date = DateUtils.convertStringToDateJapan(day);
@@ -242,8 +246,24 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
         }
         tableService.saveAll(tables);
         tableOfBookingService.saveAll(tableOfBookings);
+
+        List<OrderRequest> orderRequests = request.getOrderRequests();
+        List<Order> orders = new ArrayList<>();
+        orderRequests.forEach(orderRequest -> {
+            Order order = new Order();
+            order.setBooking(booking);
+            order.setFood(foodService.getFoodById(orderRequest.getFoodId()));
+            order.setBooking(booking);
+            order.setQuantity(orderRequest.getQuantity());
+            order.setStatus(StatusBooking.ORDER.getStatus());
+            orders.add(order);
+        });
+        orderService.saveAll(orders);
+
         return new BookingResponse();
     }
+
+
 
 
 }
