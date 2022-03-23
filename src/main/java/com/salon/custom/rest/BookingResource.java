@@ -48,4 +48,10 @@ public class BookingResource extends BaseResource<BookingService> {
         return ResponseEntity.ok().body(response);
     }
 
+    @PutMapping("api/actionBooking")
+    public ResponseEntity<BookingResponse> actionBooking(@RequestParam BookingRequest request) {
+        BookingResponse response = service.updateBooking(request);
+        return ResponseEntity.ok().body(response);
+    }
+
 }

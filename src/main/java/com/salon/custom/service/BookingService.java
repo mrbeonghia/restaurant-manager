@@ -225,7 +225,7 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
         booking.setNumberOfCustomers(request.getNumberOfCustomers());
         booking.setBookingTime(request.getBookingTime());
         booking.setEndTime(DateUtils.getEndTimeBooking(booking.getBookingTime()));
-        booking.setStatus(StatusBooking.ORDER.getStatus());
+        booking.setStatus(request.getStatus());
         save(booking);
         List<TableOfBooking> tableOfBookings = new ArrayList<>();
         List<TableEntity> tables = new ArrayList<>();
@@ -262,8 +262,6 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
 
         return new BookingResponse();
     }
-
-
 
 
 }

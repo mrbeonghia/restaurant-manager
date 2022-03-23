@@ -37,11 +37,15 @@ public class FoodService extends BaseService<Food, FoodRepository> {
                 .collect(Collectors.toMap(Category::getId, Function.identity()));
         foods.forEach(food -> {
             FoodDTO foodDTO = toDTO(food);
-            Category category = idToCategory.get(food.getCategory().getId());
-            if (category != null){
-                foodDTO.setCategory(category.getName());
+            Category categoryOfFood = food.getCategory();
+            if (categoryOfFood != null){
+                Category category = idToCategory.get(categoryOfFood.getId());
+                if (category != null){
+                    foodDTO.setCategory(category.getName());
+                }
+                foodDTOS.add(foodDTO);
             }
-            foodDTOS.add(foodDTO);
+
 
         });
         return new FoodResponse(foodDTOS, populatePageDto(foods));
