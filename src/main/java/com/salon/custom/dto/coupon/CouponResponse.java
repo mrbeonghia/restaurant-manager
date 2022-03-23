@@ -27,5 +27,7 @@ public class CouponResponse extends BaseResponse {
         this.couponDTO = couponDTO;
     }
 
-
+    public CouponResponse(List<CouponDTO> couponDTOList) {
+        this.couponDTOList = couponDTOList;
+    }
 }

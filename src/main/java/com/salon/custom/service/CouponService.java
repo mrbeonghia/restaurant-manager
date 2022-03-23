@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -21,6 +22,13 @@ public class CouponService extends BaseService<Coupon, CouponRepository> {
         List<CouponDTO> couponDTOS = new ArrayList<>();
         coupons.forEach(coupon -> couponDTOS.add(toDTO(coupon)));
         return new CouponResponse(couponDTOS, populatePageDto(coupons));
+    }
+
+    public CouponResponse getCouponAvailable(){
+        List<Coupon> coupons = repository.findCouponByDate(new Date());
+        List<CouponDTO> couponDTOS = new ArrayList<>();
+        coupons.forEach(coupon -> couponDTOS.add(toDTO(coupon)));
+        return new CouponResponse(couponDTOS);
     }
 
     public CouponResponse createCoupon(CouponRequest request){

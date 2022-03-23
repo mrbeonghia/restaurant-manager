@@ -13,4 +13,6 @@ public class OrderDTO {
     private Integer quantity;
     private Date orderTime;
     private String status;
+    private Long price;
+    private Long totalPrice;
 }

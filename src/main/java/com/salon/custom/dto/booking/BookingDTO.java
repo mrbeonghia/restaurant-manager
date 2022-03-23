@@ -27,4 +27,5 @@ public class BookingDTO {
     private Long couponId;
     private String couponName;
     private List<OrderDTO> orderDTOS;
+    private Long bill;
 }

@@ -2,11 +2,9 @@ package com.salon.custom.service;
 
 import com.salon.base.core.BaseService;
 import com.salon.custom.dto.order.OrderDTO;
-import com.salon.custom.dto.order.OrderRequest;
-import com.salon.custom.dto.order.OrderResponse;
+import com.salon.custom.entities.Food;
 import com.salon.custom.entities.Order;
 import com.salon.custom.repository.OrderRepository;
-import liquibase.pro.packaged.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,35 +15,42 @@ import java.util.Set;
 @Service
 public class OrderService extends BaseService<Order, OrderRepository> {
 
-    @Autowired BookingService bookingService;
+    @Autowired
+    BookingService bookingService;
 
-    public List<OrderDTO> getListOrderByBookingId(Long bookingId){
+    public List<OrderDTO> getListOrderByBookingId(Long bookingId) {
         List<OrderDTO> orderDTOS = new ArrayList<>();
         List<Order> orders = repository.findByBookingIdAndDeletedFalse(bookingId);
         orders.forEach(order -> orderDTOS.add(toDTO(order)));
         return orderDTOS;
     }
 
-    private OrderDTO toDTO(Order order){
+    private OrderDTO toDTO(Order order) {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setId(order.getId());
         orderDTO.setBookingId(order.getBooking().getId());
-        orderDTO.setFoodId(order.getFood().getId());
-        orderDTO.setFoodName(order.getFood().getName());
         orderDTO.setQuantity(order.getQuantity());
         orderDTO.setOrderTime(order.getOrderTime());
         orderDTO.setStatus(order.getStatus());
+        Food food = order.getFood();
+        if (food != null) {
+            orderDTO.setFoodId(food.getId());
+            orderDTO.setFoodName(food.getName());
+            orderDTO.setPrice(food.getPrice());
+            orderDTO.setTotalPrice(food.getPrice() * order.getQuantity());
+        }
+
         return orderDTO;
     }
 
-    public List<OrderDTO> getByBookingIds(Set<Long> bookingIds){
+    public List<OrderDTO> getByBookingIds(Set<Long> bookingIds) {
         List<Order> orders = repository.findByBookingIdInAndDeletedFalse(bookingIds);
         List<OrderDTO> orderDTOS = new ArrayList<>();
         orders.forEach(order -> orderDTOS.add(toDTO(order)));
         return orderDTOS;
     }
 
-    public void saveAll(List<Order> orders){
+    public void saveAll(List<Order> orders) {
         repository.saveAll(orders);
     }
 

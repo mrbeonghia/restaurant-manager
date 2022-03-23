@@ -38,4 +38,10 @@ public class CouponResource extends BaseResource<CouponService> {
         return ResponseEntity.ok().body(service.deleteCoupon(id));
     }
 
+    @GetMapping("api/getCouponAvailable")
+    public ResponseEntity<CouponResponse> getCouponAvailable() {
+        CouponResponse couponResponse = service.getCouponAvailable();
+        return ResponseEntity.ok().body(couponResponse);
+    }
+
 }

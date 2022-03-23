@@ -38,9 +38,9 @@ public class FoodService extends BaseService<Food, FoodRepository> {
         foods.forEach(food -> {
             FoodDTO foodDTO = toDTO(food);
             Category categoryOfFood = food.getCategory();
-            if (categoryOfFood != null){
+            if (categoryOfFood != null) {
                 Category category = idToCategory.get(categoryOfFood.getId());
-                if (category != null){
+                if (category != null) {
                     foodDTO.setCategory(category.getName());
                 }
                 foodDTOS.add(foodDTO);
@@ -51,10 +51,10 @@ public class FoodService extends BaseService<Food, FoodRepository> {
         return new FoodResponse(foodDTOS, populatePageDto(foods));
     }
 
-    public FoodResponse createFood(FoodRequest foodRequest){
+    public FoodResponse createFood(FoodRequest foodRequest) {
         Food food = new Food();
         Food foodExist = repository.findByNameAndDeletedFalse(foodRequest.getName());
-        if (foodExist != null){
+        if (foodExist != null) {
             return new FoodResponse("This food already exist", 4005);
         }
         toEntity(foodRequest, food);
@@ -62,9 +62,9 @@ public class FoodService extends BaseService<Food, FoodRepository> {
         return new FoodResponse(toDTO(food));
     }
 
-    public FoodResponse updateFood(FoodRequest foodRequest){
+    public FoodResponse updateFood(FoodRequest foodRequest) {
         Food food = repository.findByIdAndDeletedFalse(foodRequest.getId());
-        if (food == null){
+        if (food == null) {
             return new FoodResponse("This food not found", 4004);
         }
         toEntity(foodRequest, food);
@@ -72,9 +72,9 @@ public class FoodService extends BaseService<Food, FoodRepository> {
         return new FoodResponse(toDTO(food));
     }
 
-    public FoodResponse deleteFood(Long id){
+    public FoodResponse deleteFood(Long id) {
         Food food = repository.findByIdAndDeletedFalse(id);
-        if (food == null){
+        if (food == null) {
             return new FoodResponse("This food not found", 4004);
         }
         food.setDeleted(true);
@@ -93,7 +93,7 @@ public class FoodService extends BaseService<Food, FoodRepository> {
         return foodDTO;
     }
 
-    private void toEntity(FoodRequest request, Food food){
+    private void toEntity(FoodRequest request, Food food) {
         food.setName(request.getName());
         food.setDescription(request.getDescription());
         food.setImageUrl(request.getImageUrl());
@@ -102,7 +102,7 @@ public class FoodService extends BaseService<Food, FoodRepository> {
         food.setCategory(categoryService.getById(request.getCategoryId()));
     }
 
-    public Food getFoodById(Long id){
+    public Food getFoodById(Long id) {
         return repository.findByIdAndDeletedFalse(id);
     }
 }
