@@ -31,6 +31,10 @@ public class CouponService extends BaseService<Coupon, CouponRepository> {
         return new CouponResponse(couponDTOS);
     }
 
+    public List<Coupon> findCouponAvailable(){
+        return repository.findCouponByDate(new Date());
+    }
+
     public CouponResponse createCoupon(CouponRequest request){
         Coupon coupon = new Coupon();
         toEntity(request, coupon);

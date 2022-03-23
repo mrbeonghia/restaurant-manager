@@ -5,7 +5,6 @@ import com.salon.custom.dto.booking.BookingDTO;
 import com.salon.custom.dto.booking.BookingRequest;
 import com.salon.custom.dto.booking.BookingResponse;
 import com.salon.custom.dto.booking.TableBookingDTO;
-import com.salon.custom.dto.food.FoodRequest;
 import com.salon.custom.dto.order.OrderDTO;
 import com.salon.custom.dto.order.OrderRequest;
 import com.salon.custom.entities.*;
@@ -18,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +37,9 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
 
     @Autowired
     private FoodService foodService;
+
+    @Autowired
+    private CouponService couponService;
 
     /*public BookingResponse getListBooking(String day, Pageable pageable) {
         Date date = DateUtils.convertStringToDateJapan(day);
@@ -78,6 +81,8 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
 
         Set<Long> bookingIds = bookings.stream().map(Booking::getId).collect(Collectors.toSet());
         List<TableOfBooking> tableOfBookingAll = tableOfBookingService.getByBookingIds(bookingIds);
+        Map<Long, Coupon> couponMap = couponService.findCouponAvailable().stream()
+                .collect(Collectors.toMap(Coupon::getId, Function.identity()));
         Map<Long, List<TableOfBooking>> bookingIdToTables = new HashMap<>();
         for (TableOfBooking tableOfBooking : tableOfBookingAll) {
             List<TableOfBooking> listInMap = bookingIdToTables
@@ -99,7 +104,14 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
                 List<Booking> booking =
                         tablesOfBooking.stream().map(TableOfBooking::getBooking).collect(Collectors.toList());
                 List<BookingDTO> bookingDTOS1 = new ArrayList<>();
-                booking.forEach(booking1 -> bookingDTOS1.add(toDTO(booking1)));
+                booking.forEach(booking1 -> {
+                    BookingDTO bookingDTO = toDTO(booking1);
+                    Coupon coupon = couponMap.get(bookingDTO.getCouponId());
+                    if (coupon != null){
+                        bookingDTO.setCouponName(coupon.getTitle());
+                    }
+                    bookingDTOS1.add(bookingDTO);
+                });
                 tableBookingDTO.setBookingDTOS(bookingDTOS1);
             }
             tableBookingDTOS.add(tableBookingDTO);
@@ -126,7 +138,7 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
         bookingDTO.setArrivalTime(booking.getArrivalTime());
         bookingDTO.setEndTime(booking.getEndTime());
         bookingDTO.setStatus(booking.getStatus());
-
+        bookingDTO.setCouponId(bookingDTO.getCouponId());
         return bookingDTO;
     }
 
