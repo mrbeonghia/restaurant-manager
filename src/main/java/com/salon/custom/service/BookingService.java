@@ -83,12 +83,20 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
         List<TableOfBooking> tableOfBookingAll = tableOfBookingService.getByBookingIds(bookingIds);
         Map<Long, Coupon> couponMap = couponService.findCouponAvailable().stream()
                 .collect(Collectors.toMap(Coupon::getId, Function.identity()));
-        Map<Long, List<TableOfBooking>> bookingIdToTables = new HashMap<>();
+        Map<Long, List<TableOfBooking>> tableIdToTableOfBookings = new HashMap<>();
         for (TableOfBooking tableOfBooking : tableOfBookingAll) {
-            List<TableOfBooking> listInMap = bookingIdToTables
+            List<TableOfBooking> listInMap = tableIdToTableOfBookings
                     .getOrDefault(tableOfBooking.getTableEntity().getId(), new ArrayList<>());
             listInMap.add(tableOfBooking);
-            bookingIdToTables.put(tableOfBooking.getTableEntity().getId(), listInMap);
+            tableIdToTableOfBookings.put(tableOfBooking.getTableEntity().getId(), listInMap);
+        }
+
+        Map<Long, List<TableOfBooking>> bookingIdToTableOfBookings = new HashMap<>();
+        for (TableOfBooking tableOfBooking : tableOfBookingAll) {
+            List<TableOfBooking> listInMap = bookingIdToTableOfBookings
+                    .getOrDefault(tableOfBooking.getBooking().getId(), new ArrayList<>());
+            listInMap.add(tableOfBooking);
+            bookingIdToTableOfBookings.put(tableOfBooking.getBooking().getId(), listInMap);
         }
 
         List<TableEntity> tableEntities = tableService.findListTable();
@@ -99,7 +107,7 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
             tableBookingDTO.setName(table.getName());
             tableBookingDTO.setSeat(table.getSeat());
             tableBookingDTO.setAvailable(table.isAvailable());
-            List<TableOfBooking> tablesOfBooking = bookingIdToTables.get(table.getId());
+            List<TableOfBooking> tablesOfBooking = tableIdToTableOfBookings.get(table.getId());
             if (tablesOfBooking != null) {
                 List<Booking> booking =
                         tablesOfBooking.stream().map(TableOfBooking::getBooking).collect(Collectors.toList());
@@ -107,6 +115,11 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
                 booking.forEach(booking1 -> {
                     BookingDTO bookingDTO = toDTO(booking1);
                     Coupon coupon = couponMap.get(bookingDTO.getCouponId());
+                    List<TableOfBooking> tablesOfThisBooking = bookingIdToTableOfBookings.get(booking1.getId());
+                    if (tablesOfThisBooking != null){
+                        bookingDTO.setTableDTOS(tableOfBookingService.toDTOS(tablesOfThisBooking));
+                    }
+
                     if (coupon != null){
                         bookingDTO.setCouponName(coupon.getTitle());
                     }

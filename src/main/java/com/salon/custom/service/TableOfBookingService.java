@@ -28,6 +28,8 @@ public class TableOfBookingService extends BaseService<TableOfBooking, TableOfBo
             tableBookingDTO.setId(table.getId());
             tableBookingDTO.setBookingId(table.getBooking().getId());
             tableBookingDTO.setName(table.getTableEntity().getName());
+            tableBookingDTO.setSeat(table.getTableEntity().getSeat());
+            tableBookingDTO.setAvailable(table.getTableEntity().isAvailable());
             tableBookingDTOS.add(tableBookingDTO);
         });
         return tableBookingDTOS;
