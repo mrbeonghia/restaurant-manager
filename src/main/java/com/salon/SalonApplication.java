@@ -12,7 +12,7 @@ import java.util.TimeZone;
 
 @EnableScheduling
 @SpringBootApplication
-public class RestaurantApplication {
+public class SalonApplication {
 
     @Value("${serverTimezone}")
     private String serverTimezone;
@@ -24,7 +24,7 @@ public class RestaurantApplication {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(RestaurantApplication.class, args);
+        SpringApplication.run(SalonApplication.class, args);
     }
 
     @Bean
