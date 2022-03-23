@@ -293,5 +293,15 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
         return new BookingResponse();
     }
 
+    public BookingResponse actionBooking(BookingRequest request) {
+        Booking booking = repository.findByIdAndDeletedFalse(request.getId());
+        if (booking == null) {
+            return new BookingResponse("This booking not found", 4005);
+        }
+        booking.setStatus(request.getStatus());
+        update(booking);
+        return new BookingResponse();
+    }
+
 
 }
