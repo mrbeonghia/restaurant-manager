@@ -9,8 +9,13 @@ import java.util.List;
 @Data
 public class CategoryResponse extends BaseResponse {
     private List<Category> categoryDTOS;
+    private Category categoryDTO;
 
     public CategoryResponse(List<Category> categories) {
         this.categoryDTOS = categories;
+    }
+
+    public CategoryResponse(Category categoryDTO) {
+        this.categoryDTO = categoryDTO;
     }
 }

@@ -13,12 +13,4 @@ public class Regex {
         return (matcher.find()&&matcher.group().equals(phoneNumber));
     }
 
-    public static boolean checkFuriganaName(String furiganaName){
-        if (furiganaName == null){
-            return false;
-        }
-        Pattern pattern = Pattern.compile("^[ぁ-ん]+$");
-        Matcher matcher = pattern.matcher(furiganaName);
-        return (matcher.find()&&matcher.group().equals(furiganaName));
-    }
 }

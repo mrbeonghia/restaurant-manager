@@ -6,10 +6,9 @@ import com.salon.custom.dto.booking.BookingRequest;
 import com.salon.custom.dto.booking.BookingResponse;
 import com.salon.custom.dto.booking.TableBookingDTO;
 import com.salon.custom.dto.order.OrderDTO;
-import com.salon.custom.dto.table.TableDTO;
-import com.salon.custom.entities.Booking;
-import com.salon.custom.entities.TableEntity;
-import com.salon.custom.entities.TableOfBooking;
+import com.salon.custom.dto.order.OrderRequest;
+import com.salon.custom.entities.*;
+import com.salon.custom.enums.StatusBooking;
 import com.salon.custom.repository.BookingRepository;
 import com.salon.custom.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +30,9 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private UserService userService;
 
     /*public BookingResponse getListBooking(String day, Pageable pageable) {
         Date date = DateUtils.convertStringToDateJapan(day);
@@ -124,7 +126,7 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
 
     public BookingResponse getBookingDetail(Long bookingId){
         BookingResponse response = new BookingResponse();
-        Booking booking = repository.findByIdAndDeletedFalseOrderById(bookingId);
+        Booking booking = repository.findByIdAndDeletedFalse(bookingId);
         BookingDTO bookingDTO = toDTO(booking);
         bookingDTO.setOrderDTOS(orderService.getListOrderByBookingId(bookingId));
         response.setBookingDTO(bookingDTO);
@@ -164,11 +166,82 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
 
     public BookingResponse createBooking(BookingRequest request){
         Set<Long> tableIds = request.getTableIds();
-        List<TableEntity> tableAvailable = tableService.getByIds(request.getTableIds());
+        List<TableEntity> tableAvailable = tableService.getTablesAvailable();
+        List<TableEntity> tableBookings = tableService.getByIds(request.getTableIds());
         Set<Long> tableAvailableIds = tableAvailable.stream().map(TableEntity::getId).collect(Collectors.toSet());
-        if (!tableIds.equals(tableAvailableIds)){
+        if (!tableAvailableIds.containsAll(tableIds)){
             return new BookingResponse("Some tables are already booked", 4005);
         }
+        Booking booking = new Booking();
+        booking.setCustomerName(request.getCustomerName());
+        String customerPhone = request.getCustomerPhone();
+        UserEntity user = userService.getUserByPhone(customerPhone);
+        if (user != null){
+            booking.setUserEntity(user);
+        } else {
+            booking.setCustomerPhone(customerPhone);
+        }
+        booking.setNumberOfCustomers(request.getNumberOfCustomers());
+        booking.setBookingTime(request.getBookingTime());
+        booking.setEndTime(DateUtils.getEndTimeBooking(booking.getBookingTime()));
+        booking.setStatus(StatusBooking.ORDER.getStatus());
+        save(booking);
+        List<TableOfBooking> tableOfBookings = new ArrayList<>();
+        List<TableEntity> tables = new ArrayList<>();
+        for (TableEntity tableEntity : tableBookings) {
+            TableOfBooking tableOfBooking = new TableOfBooking();
+            tableOfBooking.setBooking(booking);
+            tableOfBooking.setTableEntity(tableEntity);
+            tableEntity.setAvailable(false);
+            tables.add(tableEntity);
+            tableOfBookingService.preSave(tableOfBooking);
+            tableOfBookings.add(tableOfBooking);
+        }
+        tableService.saveAll(tables);
+        tableOfBookingService.saveAll(tableOfBookings);
+
+//        List<OrderRequest> orderRequests
+
+        return new BookingResponse();
+    }
+
+    public BookingResponse updateBooking(BookingRequest request){
+        Set<Long> tableIds = request.getTableIds();
+        List<TableEntity> tableAvailable = tableService.getTablesAvailable();
+        List<TableEntity> tableBookings = tableService.getByIds(request.getTableIds());
+        Set<Long> tableAvailableIds = tableAvailable.stream().map(TableEntity::getId).collect(Collectors.toSet());
+        if (!tableAvailableIds.containsAll(tableIds)){
+            return new BookingResponse("Some tables are already booked", 4005);
+        }
+        Booking booking = repository.findByIdAndDeletedFalse(request.getId());
+        if (booking == null){
+            return new BookingResponse("This booking not found", 4005);
+        }
+
+        booking.setNumberOfCustomers(request.getNumberOfCustomers());
+        booking.setBookingTime(request.getBookingTime());
+        booking.setEndTime(DateUtils.getEndTimeBooking(booking.getBookingTime()));
+        booking.setStatus(StatusBooking.ORDER.getStatus());
+        save(booking);
+        List<TableOfBooking> tableOfBookings = new ArrayList<>();
+        List<TableEntity> tables = new ArrayList<>();
+        List<TableOfBooking> tableOfBookingsOld = tableOfBookingService
+                .getByBookingId(booking.getId(), tableIds);
+        tableOfBookingsOld.forEach(table -> {
+            table.setDeleted(true);
+            tableOfBookings.add(table);
+        });
+        for (TableEntity tableEntity : tableBookings) {
+            TableOfBooking tableOfBooking = new TableOfBooking();
+            tableOfBooking.setBooking(booking);
+            tableOfBooking.setTableEntity(tableEntity);
+            tableEntity.setAvailable(false);
+            tables.add(tableEntity);
+            tableOfBookingService.preSave(tableOfBooking);
+            tableOfBookings.add(tableOfBooking);
+        }
+        tableService.saveAll(tables);
+        tableOfBookingService.saveAll(tableOfBookings);
         return new BookingResponse();
     }
 

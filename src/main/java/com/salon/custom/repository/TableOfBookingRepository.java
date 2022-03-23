@@ -15,4 +15,8 @@ public interface TableOfBookingRepository extends BaseRepository<TableOfBooking>
             "AND tb.deleted = false ")
     List<TableOfBooking> findByBookingIdIn(Set<Long> bookingIds);
 
+    @Query(value = "SELECT tb FROM TableOfBooking tb WHERE tb.booking.id = ?1 " +
+            "AND NOT tb.tableEntity.id IN (?2) AND tb.deleted = false ")
+    List<TableOfBooking> findByBookingId(Long bookingId, Set<Long> tableIds);
+
 }

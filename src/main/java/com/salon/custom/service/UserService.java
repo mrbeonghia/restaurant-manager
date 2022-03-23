@@ -6,7 +6,6 @@ import com.salon.custom.dto.user.UserRequest;
 import com.salon.custom.dto.user.UserResponse;
 import com.salon.custom.entities.UserEntity;
 import com.salon.custom.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -68,7 +67,7 @@ public class UserService extends BaseService<UserEntity, UserRepository> {
     }
 
     public UserResponse getListUser(String search, Pageable pageable){
-        Page<UserEntity> userEntities = repository.findByDeletedFalseOrderById(pageable);
+        Page<UserEntity> userEntities = repository.findByDeletedFalseOrderByIdDesc(pageable);
         List<UserDTO> userDTOS = new ArrayList<>();
         userEntities.forEach(userEntity -> userDTOS.add(toDTO(userEntity)));
         return new UserResponse(userDTOS, populatePageDto(userEntities));
@@ -79,6 +78,8 @@ public class UserService extends BaseService<UserEntity, UserRepository> {
         repository.save(userEntity);
     }
 
-
+    public UserEntity getUserByPhone(String phone){
+        return repository.findByPhoneNumberAndDeletedFalse(phone);
+    }
 
 }

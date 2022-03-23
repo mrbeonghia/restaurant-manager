@@ -30,9 +30,9 @@ UserRepository extends BaseRepository<UserEntity> {
             "( :search is null or u.name like concat('%', :search, '%') " +
             "OR u.email like concat('%', :search, '%') " +
             "OR u.phoneNumber like concat('%', :search, '%')) " +
-            "AND u.deleted = false ")
+            "AND u.deleted = false ORDER BY u.id DESC ")
     Page<UserEntity> searchUser(@Param("search") String search, Pageable pageable);
 
-    Page<UserEntity> findByDeletedFalseOrderById(Pageable pageable);
+    Page<UserEntity> findByDeletedFalseOrderByIdDesc(Pageable pageable);
 
 }

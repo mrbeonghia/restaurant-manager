@@ -78,4 +78,12 @@ public class TableService extends BaseService<TableEntity, TableRepository> {
         return repository.findByIdInAndDeletedFalse(ids);
     }
 
+    public void saveAll(List<TableEntity> tables){
+        repository.saveAll(tables);
+    }
+
+    public List<TableEntity> getTablesAvailable(){
+        return repository.findTablesAvailable();
+    }
+
 }

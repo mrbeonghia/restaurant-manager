@@ -17,6 +17,10 @@ public class TableOfBookingService extends BaseService<TableOfBooking, TableOfBo
         return repository.findByBookingIdIn(bookingIds);
     }
 
+    public List<TableOfBooking> getByBookingId(Long bookingId, Set<Long> tableIds){
+        return repository.findByBookingId(bookingId, tableIds);
+    }
+
     public List<TableBookingDTO> toDTOS(List<TableOfBooking> tables){
         List<TableBookingDTO> tableBookingDTOS = new ArrayList<>();
         tables.forEach(table -> {
@@ -27,6 +31,10 @@ public class TableOfBookingService extends BaseService<TableOfBooking, TableOfBo
             tableBookingDTOS.add(tableBookingDTO);
         });
         return tableBookingDTOS;
+    }
+
+    public void saveAll(List<TableOfBooking> tables){
+        repository.saveAll(tables);
     }
 
 }

@@ -2,8 +2,12 @@ package com.salon.custom.service;
 
 import com.salon.base.core.BaseService;
 import com.salon.custom.dto.order.OrderDTO;
+import com.salon.custom.dto.order.OrderRequest;
+import com.salon.custom.dto.order.OrderResponse;
 import com.salon.custom.entities.Order;
 import com.salon.custom.repository.OrderRepository;
+import liquibase.pro.packaged.A;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,6 +16,8 @@ import java.util.Set;
 
 @Service
 public class OrderService extends BaseService<Order, OrderRepository> {
+
+    @Autowired BookingService bookingService;
 
     public List<OrderDTO> getListOrderByBookingId(Long bookingId){
         List<OrderDTO> orderDTOS = new ArrayList<>();
@@ -38,5 +44,6 @@ public class OrderService extends BaseService<Order, OrderRepository> {
         orders.forEach(order -> orderDTOS.add(toDTO(order)));
         return orderDTOS;
     }
+
 
 }

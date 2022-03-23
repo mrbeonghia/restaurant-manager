@@ -14,7 +14,7 @@ public interface StaffRepository extends BaseRepository<Staff> {
 
     Staff findByIdAndDeletedFalse(Long staffId);
 
-    Page<Staff> findByDeletedFalseOrderById(Pageable pageable);
+    Page<Staff> findByDeletedFalseOrderByIdDesc(Pageable pageable);
 
     Staff findByPhoneNumberAndDeletedFalse(String phoneNumber);
 
