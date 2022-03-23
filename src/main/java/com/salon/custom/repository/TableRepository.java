@@ -27,4 +27,8 @@ public interface TableRepository extends BaseRepository<TableEntity> {
             "WHERE t.available = true AND t.deleted = false ")
     List<TableEntity> findTablesAvailable();
 
+    @Query(value = "SELECT t.id FROM TableEntity t LEFT JOIN TableOfBooking tb ON t = tb.tableEntity " +
+            "WHERE tb.booking.id = ?1 AND t.deleted = false ")
+    Set<Long> findTableIdsOfBooking(Long bookingId);
+
 }

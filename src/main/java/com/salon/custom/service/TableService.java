@@ -86,6 +86,10 @@ public class TableService extends BaseService<TableEntity, TableRepository> {
         return repository.findTablesAvailable();
     }
 
+    public Set<Long> getTableIdsOfBooking(Long bookingId){
+        return repository.findTableIdsOfBooking(bookingId);
+    }
+
     public TableResponse getListTableAvailable(){
         List<TableEntity> tableEntities = repository.findTablesAvailable();
         List<TableDTO> tableDTOS = new ArrayList<>();

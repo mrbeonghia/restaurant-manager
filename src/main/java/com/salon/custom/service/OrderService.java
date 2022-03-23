@@ -54,5 +54,13 @@ public class OrderService extends BaseService<Order, OrderRepository> {
         repository.saveAll(orders);
     }
 
+    public List<Order> getByBookingIdAndIdNotIn(Long bookingId, Set<Long> ids){
+        return repository.findByBookingIdAndIdNotIn(bookingId, ids);
+    }
+
+    public List<Order> getByBookingId(Long bookingId) {
+        return repository.findByBookingIdAndDeletedFalse(bookingId);
+    }
+
 
 }

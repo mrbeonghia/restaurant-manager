@@ -253,27 +253,31 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
     }
 
     public BookingResponse updateBooking(BookingRequest request) {
-        /*Set<Long> tableIds = request.getTableIds();
+        Set<Long> tableIds = request.getTableIds();
         List<TableEntity> tableAvailable = tableService.getTablesAvailable();
-        List<TableEntity> tableBookings = tableService.getByIds(request.getTableIds());
-        Set<Long> tableAvailableIds = tableAvailable.stream().map(TableEntity::getId).collect(Collectors.toSet());
+        Set<Long> tableIdsOfThisBooking = tableService.getTableIdsOfBooking(request.getId());
+        Set<Long> tableAvailableIds = tableAvailable
+                .stream().map(TableEntity::getId).collect(Collectors.toSet());
+        tableIds.removeAll(tableIdsOfThisBooking);
         if (!tableAvailableIds.containsAll(tableIds)) {
             return new BookingResponse("Some tables are already booked", 4005);
-        }*/
+        }
         Booking booking = repository.findByIdAndDeletedFalse(request.getId());
         if (booking == null) {
             return new BookingResponse("This booking not found", 4005);
         }
+        Long bookingId = booking.getId();
+        List<TableEntity> tableBookings = tableService.getByIds(request.getTableIds());
 
         booking.setNumberOfCustomers(request.getNumberOfCustomers());
         booking.setBookingTime(request.getBookingTime());
         booking.setEndTime(DateUtils.getEndTimeBooking(booking.getBookingTime()));
         booking.setStatus(request.getStatus());
         save(booking);
-        /*List<TableOfBooking> tableOfBookings = new ArrayList<>();
+        List<TableOfBooking> tableOfBookings = new ArrayList<>();
         List<TableEntity> tables = new ArrayList<>();
         List<TableOfBooking> tableOfBookingsOld = tableOfBookingService
-                .getByBookingId(booking.getId(), tableIds);
+                .getByBookingId(bookingId, tableIds);
         tableOfBookingsOld.forEach(table -> {
             table.setDeleted(true);
             tableOfBookings.add(table);
@@ -288,18 +292,41 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
             tableOfBookings.add(tableOfBooking);
         }
         tableService.saveAll(tables);
-        tableOfBookingService.saveAll(tableOfBookings);*/
+        tableOfBookingService.saveAll(tableOfBookings);
+
+        List<Order> orders = new ArrayList<>();
 
         List<OrderRequest> orderRequests = request.getOrderRequests();
-        List<Order> orders = new ArrayList<>();
-        orderRequests.forEach(orderRequest -> {
-            Order order = new Order();
-            order.setBooking(booking);
-            order.setFood(foodService.getFoodById(orderRequest.getFoodId()));
-            order.setBooking(booking);
-            order.setQuantity(orderRequest.getQuantity());
-            order.setStatus(orderRequest.getStatus());
+        Set<Long> orderIds = orderRequests.stream().map(OrderRequest::getId).collect(Collectors.toSet());
+        List<Order> ordersOld = orderService.getByBookingIdAndIdNotIn(bookingId,orderIds);
+        ordersOld.forEach(order -> {
+            order.setDeleted(true);
             orders.add(order);
+        });
+
+        List<Order> ordersExist = orderService.getByBookingId(bookingId);
+        Map<Long, Order> idToOrderExist = ordersExist.stream()
+                .collect(Collectors.toMap((Order::getId), Function.identity()));
+
+        orderRequests.forEach(orderRequest -> {
+            Order orderExist = idToOrderExist.get(orderRequest.getId());
+            if (orderExist != null){
+                orderExist.setFood(foodService.getFoodById(orderRequest.getFoodId()));
+                orderExist.setQuantity(orderRequest.getQuantity());
+                orderExist.setStatus(orderRequest.getStatus());
+                orders.add(orderExist);
+            }
+            if (orderRequest.getId() == null){
+                Order order = new Order();
+                order.setBooking(booking);
+                order.setFood(foodService.getFoodById(orderRequest.getFoodId()));
+                order.setBooking(booking);
+                order.setQuantity(orderRequest.getQuantity());
+                order.setStatus(orderRequest.getStatus());
+                order.setOrderTime(new Date());
+                orders.add(order);
+            }
+
         });
         orderService.saveAll(orders);
 
