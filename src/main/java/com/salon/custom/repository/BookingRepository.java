@@ -13,12 +13,11 @@ import java.util.List;
 @Repository
 public interface BookingRepository extends BaseRepository<Booking> {
 
-    @Query(value = "SELECT b FROM Booking b WHERE b.arrivalTime >= ?1 AND b.arrivalTime <= ?2 " +
+    @Query(value = "SELECT b FROM Booking b WHERE b.bookingTime >= ?1 AND b.bookingTime <= ?2 " +
             "AND b.deleted = false ")
     Page<Booking> findByDeletedFalse(Date startTIme, Date endTime, Pageable page);
 
-
-    @Query(value = "SELECT b FROM Booking b WHERE b.arrivalTime >= ?1 AND b.arrivalTime <= ?2 " +
+    @Query(value = "SELECT b FROM Booking b WHERE b.bookingTime >= ?1 AND b.bookingTime <= ?2 " +
             "AND b.deleted = false ")
     List<Booking> findByDeletedFalse(Date startTIme, Date endTime);
 

@@ -110,14 +110,15 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
 
     private BookingDTO toDTO(Booking booking) {
         BookingDTO bookingDTO = new BookingDTO();
-        Long userId = booking.getUserEntity().getId();
-        bookingDTO.setUserId(userId);
-        if (userId == null) {
+        UserEntity userEntity = booking.getUserEntity();
+
+        if (userEntity == null) {
             bookingDTO.setCustomerName(booking.getCustomerName());
             bookingDTO.setCustomerPhone(booking.getCustomerPhone());
         } else {
-            bookingDTO.setCustomerName(booking.getUserEntity().getName());
-            bookingDTO.setCustomerPhone(booking.getUserEntity().getPhoneNumber());
+            bookingDTO.setUserId(userEntity.getId());
+            bookingDTO.setCustomerName(userEntity.getName());
+            bookingDTO.setCustomerPhone(userEntity.getPhoneNumber());
         }
         bookingDTO.setId(booking.getId());
         bookingDTO.setNumberOfCustomers(booking.getNumberOfCustomers());
