@@ -17,6 +17,10 @@ public class TableOfBookingService extends BaseService<TableOfBooking, TableOfBo
         return repository.findByBookingIdIn(bookingIds);
     }
 
+    public List<TableOfBooking> getByBookingId(Long bookingId){
+        return repository.findByBookingId(bookingId);
+    }
+
     public List<TableOfBooking> getByBookingId(Long bookingId, Set<Long> tableIds){
         return repository.findByBookingId(bookingId, tableIds);
     }

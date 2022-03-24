@@ -52,4 +52,10 @@ public class BookingResource extends BaseResource<BookingService> {
         return ResponseEntity.ok().body(response);
     }
 
+    @DeleteMapping("api/deleteBooking")
+    public ResponseEntity<BookingResponse> deleteBooking(@RequestParam("id") Long id) {
+        BookingResponse response = service.deleteBooking(id);
+        return ResponseEntity.ok().body(response);
+    }
+
 }

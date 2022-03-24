@@ -340,6 +340,14 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
         if (booking == null) {
             return new BookingResponse("This booking not found", 4005);
         }
+        if (request.getStatus().equals("done")) {
+            List<TableEntity> tables = tableService.getTableOfBooking(request.getId());
+            tables.forEach(table -> {
+                table.setAvailable(true);
+                tableService.update(table);
+            });
+        }
+
         booking.setStatus(request.getStatus());
         update(booking);
         return new BookingResponse();
@@ -354,6 +362,27 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
         for (OrderRequest orderRequest : orderRequests) {
 
         }
+        return new BookingResponse();
+    }
+
+    public BookingResponse deleteBooking(Long id) {
+        Booking booking = repository.findByIdAndDeletedFalse(id);
+        if (booking == null) {
+            return new BookingResponse("This booking not found", 4005);
+        }
+        List<TableEntity> tables = tableService.getTableOfBooking(id);
+        tables.forEach(table -> {
+            table.setAvailable(true);
+            tableService.update(table);
+        });
+        List<TableOfBooking> tableOfBookings = tableOfBookingService.getByBookingId(booking.getId());
+        tableOfBookings.forEach(tableOfBooking -> {
+            tableOfBooking.setDeleted(true);
+            tableOfBookingService.update(tableOfBooking);
+        });
+
+        booking.setDeleted(true);
+        update(booking);
         return new BookingResponse();
     }
 
