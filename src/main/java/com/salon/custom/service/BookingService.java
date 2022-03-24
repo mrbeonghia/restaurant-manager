@@ -260,16 +260,17 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
                 .stream().map(TableEntity::getId).collect(Collectors.toSet());
         if (tableIds != null) {
             tableIds.removeAll(tableIdsOfThisBooking);
+            if (!tableAvailableIds.containsAll(tableIds)) {
+                return new BookingResponse("Some tables are already booked", 4005);
+            }
         }
-        if (!tableAvailableIds.containsAll(tableIds)) {
-            return new BookingResponse("Some tables are already booked", 4005);
-        }
+
         Booking booking = repository.findByIdAndDeletedFalse(request.getId());
         if (booking == null) {
             return new BookingResponse("This booking not found", 4005);
         }
         Long bookingId = booking.getId();
-        List<TableEntity> tableBookings = tableService.getByIds(request.getTableIds());
+//        List<TableEntity> tableBookings = tableService.getByIds(request.getTableIds());
 
         booking.setNumberOfCustomers(request.getNumberOfCustomers());
         booking.setBookingTime(request.getBookingTime());
@@ -284,7 +285,7 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
             table.setDeleted(true);
             tableOfBookings.add(table);
         });
-        for (TableEntity tableEntity : tableBookings) {
+        /*for (TableEntity tableEntity : tableBookings) {
             TableOfBooking tableOfBooking = new TableOfBooking();
             tableOfBooking.setBooking(booking);
             tableOfBooking.setTableEntity(tableEntity);
@@ -294,7 +295,7 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
             tableOfBookings.add(tableOfBooking);
         }
         tableService.saveAll(tables);
-        tableOfBookingService.saveAll(tableOfBookings);
+        tableOfBookingService.saveAll(tableOfBookings);*/
 
         List<Order> orders = new ArrayList<>();
 
@@ -340,7 +341,7 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
         if (booking == null) {
             return new BookingResponse("This booking not found", 4005);
         }
-        if (request.getStatus().equals("done")) {
+        if (request.getStatus().equals("payment")) {
             List<TableEntity> tables = tableService.getTableOfBooking(request.getId());
             tables.forEach(table -> {
                 table.setAvailable(true);
