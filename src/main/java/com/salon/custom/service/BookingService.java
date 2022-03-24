@@ -116,11 +116,11 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
                     BookingDTO bookingDTO = toDTO(booking1);
                     Coupon coupon = couponMap.get(bookingDTO.getCouponId());
                     List<TableOfBooking> tablesOfThisBooking = bookingIdToTableOfBookings.get(booking1.getId());
-                    if (tablesOfThisBooking != null){
+                    if (tablesOfThisBooking != null) {
                         bookingDTO.setTableDTOS(tableOfBookingService.toDTOS(tablesOfThisBooking));
                     }
 
-                    if (coupon != null){
+                    if (coupon != null) {
                         bookingDTO.setCouponName(coupon.getTitle());
                     }
                     bookingDTOS1.add(bookingDTO);
@@ -258,7 +258,9 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
         Set<Long> tableIdsOfThisBooking = tableService.getTableIdsOfBooking(request.getId());
         Set<Long> tableAvailableIds = tableAvailable
                 .stream().map(TableEntity::getId).collect(Collectors.toSet());
-        tableIds.removeAll(tableIdsOfThisBooking);
+        if (tableIds != null) {
+            tableIds.removeAll(tableIdsOfThisBooking);
+        }
         if (!tableAvailableIds.containsAll(tableIds)) {
             return new BookingResponse("Some tables are already booked", 4005);
         }
@@ -298,7 +300,7 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
 
         List<OrderRequest> orderRequests = request.getOrderRequests();
         Set<Long> orderIds = orderRequests.stream().map(OrderRequest::getId).collect(Collectors.toSet());
-        List<Order> ordersOld = orderService.getByBookingIdAndIdNotIn(bookingId,orderIds);
+        List<Order> ordersOld = orderService.getByBookingIdAndIdNotIn(bookingId, orderIds);
         ordersOld.forEach(order -> {
             order.setDeleted(true);
             orders.add(order);
@@ -310,13 +312,13 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
 
         orderRequests.forEach(orderRequest -> {
             Order orderExist = idToOrderExist.get(orderRequest.getId());
-            if (orderExist != null){
+            if (orderExist != null) {
                 orderExist.setFood(foodService.getFoodById(orderRequest.getFoodId()));
                 orderExist.setQuantity(orderRequest.getQuantity());
                 orderExist.setStatus(orderRequest.getStatus());
                 orders.add(orderExist);
             }
-            if (orderRequest.getId() == null){
+            if (orderRequest.getId() == null) {
                 Order order = new Order();
                 order.setBooking(booking);
                 order.setFood(foodService.getFoodById(orderRequest.getFoodId()));
