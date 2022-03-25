@@ -15,4 +15,5 @@ public class OrderDTO {
     private String status;
     private Long price;
     private Long totalPrice;
+    private String imageUrl;
 }

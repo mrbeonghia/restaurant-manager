@@ -3,7 +3,10 @@ package com.salon.custom.rest;
 import com.salon.base.core.BaseResource;
 import com.salon.custom.dto.booking.BookingRequest;
 import com.salon.custom.dto.booking.BookingResponse;
+import com.salon.custom.dto.order.OrderResponse;
 import com.salon.custom.service.BookingService;
+import com.salon.custom.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class BookingResource extends BaseResource<BookingService> {
+
+    @Autowired
+    OrderService orderService;
 
     @GetMapping("api/getTableBooking")
     public ResponseEntity<BookingResponse> getCategory(@RequestParam("day") String day) {
@@ -55,6 +61,12 @@ public class BookingResource extends BaseResource<BookingService> {
     @DeleteMapping("api/deleteBooking")
     public ResponseEntity<BookingResponse> deleteBooking(@RequestParam("id") Long id) {
         BookingResponse response = service.deleteBooking(id);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("api/getOrders")
+    public ResponseEntity<OrderResponse> getOrdersInDay() {
+        OrderResponse response = orderService.getListOrderInDay();
         return ResponseEntity.ok().body(response);
     }
 

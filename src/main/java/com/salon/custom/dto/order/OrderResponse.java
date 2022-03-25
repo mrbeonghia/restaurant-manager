@@ -18,6 +18,10 @@ public class OrderResponse extends BaseResponse {
         this.pageDto = pageDto;
     }
 
+    public OrderResponse(List<OrderDTO> orderDTOS) {
+        this.orderDTOS = orderDTOS;
+    }
+
     public OrderResponse(String message, int code) {
         super(message, code);
     }

@@ -181,9 +181,9 @@ public class BookingService extends BaseService<Booking, BookingRepository> {
         Map<Long, List<TableOfBooking>> bookingIdToTables = new HashMap<>();
         for (TableOfBooking tableOfBooking : tableOfBookingAll) {
             List<TableOfBooking> listInMap = bookingIdToTables
-                    .getOrDefault(tableOfBooking.getTableEntity().getId(), new ArrayList<>());
+                    .getOrDefault(tableOfBooking.getBooking().getId(), new ArrayList<>());
             listInMap.add(tableOfBooking);
-            bookingIdToTables.put(tableOfBooking.getTableEntity().getId(), listInMap);
+            bookingIdToTables.put(tableOfBooking.getBooking().getId(), listInMap);
         }
         List<OrderDTO> orderDTOSAll = orderService.getByBookingIds(bookingIds);
         Map<Long, List<OrderDTO>> bookingIdToOrderDTOS = orderDTOSAll

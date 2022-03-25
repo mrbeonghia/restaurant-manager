@@ -2,13 +2,16 @@ package com.salon.custom.service;
 
 import com.salon.base.core.BaseService;
 import com.salon.custom.dto.order.OrderDTO;
+import com.salon.custom.dto.order.OrderResponse;
 import com.salon.custom.entities.Food;
 import com.salon.custom.entities.Order;
 import com.salon.custom.repository.OrderRepository;
+import com.salon.custom.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -37,6 +40,7 @@ public class OrderService extends BaseService<Order, OrderRepository> {
             orderDTO.setFoodId(food.getId());
             orderDTO.setFoodName(food.getName());
             orderDTO.setPrice(food.getPrice());
+            orderDTO.setImageUrl(food.getImageUrl());
             orderDTO.setTotalPrice(food.getPrice() * order.getQuantity());
         }
 
@@ -60,6 +64,15 @@ public class OrderService extends BaseService<Order, OrderRepository> {
 
     public List<Order> getByBookingId(Long bookingId) {
         return repository.findByBookingIdAndDeletedFalse(bookingId);
+    }
+
+    public OrderResponse getListOrderInDay(){
+        Date startTime = DateUtils.getStartTimeOfDay(new Date());
+        Date endTime = DateUtils.getEndTimeOfDay(new Date());
+        List<Order> orders = repository.findOrderInDay();
+        List<OrderDTO> orderDTOS = new ArrayList<>();
+        orders.forEach(order -> orderDTOS.add(toDTO(order)));
+        return new OrderResponse(orderDTOS);
     }
 
 
